@@ -1,0 +1,15 @@
+.viora-header-admin #header_logo_preview {
+  margin-top: 10px;
+}
+
+.viora-header-admin #header_logo_preview img {
+  max-height: 80px;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  padding: 6px;
+  background: #ffffff;
+}
+
+.viora-header-admin .form-table th {
+  width: 170px;
+}

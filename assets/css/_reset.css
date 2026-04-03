@@ -76,9 +76,16 @@ h6 {
   font-family: "Shopee Display", sans-serif;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 639.98px) {
   html {
     font-size: 4.267vw;
+  }
+}
+
+/* Tablet (640px → 1023px) */
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  html {
+    font-size: 3.125vw; /* ≈ 20px @640px → ≈ 32px @1024px? Không, chờ đã... */
   }
 }
 
