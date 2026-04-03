@@ -24,21 +24,6 @@ function viora_setup()
 }
 add_action('after_setup_theme', 'viora_setup');
 
-function viora_customizer_defaults()
-{
-    $defaults = array(
-        'viora_header_title'       => __('VIORA', 'viora'),
-        'viora_header_description' => '',
-    );
-
-    foreach ($defaults as $key => $value) {
-        if (get_theme_mod($key, null) === null) {
-            set_theme_mod($key, $value);
-        }
-    }
-}
-add_action('after_setup_theme', 'viora_customizer_defaults', 20);
-
 function viora_require_file($relative_path)
 {
     $path = get_theme_file_path($relative_path);

@@ -18,12 +18,16 @@
                         <label for="header_logo"><?php echo esc_html__('Logo', 'viora'); ?></label>
                     </th>
                     <td>
-                        <input type="hidden" id="header_logo" name="header_logo" value="<?php echo esc_attr($logo_id); ?>">
-                        <button type="button" class="button" id="select_header_logo"><?php echo esc_html__('Choose Image', 'viora'); ?></button>
-                        <button type="button" class="button" id="remove_header_logo"><?php echo esc_html__('Remove', 'viora'); ?></button>
+                        <input type="hidden" id="header_logo" name="header_logo"
+                            value="<?php echo esc_attr($logo_id); ?>">
+                        <button type="button" class="button"
+                            id="select_header_logo"><?php echo esc_html__('Choose Image', 'viora'); ?></button>
+                        <button type="button" class="button"
+                            id="remove_header_logo"><?php echo esc_html__('Remove', 'viora'); ?></button>
                         <div id="header_logo_preview">
                             <?php if ($logo_url): ?>
-                                <img src="<?php echo esc_url($logo_url); ?>" alt="<?php esc_attr_e('Header logo preview', 'viora'); ?>">
+                                <img src="<?php echo esc_url($logo_url); ?>"
+                                    alt="<?php esc_attr_e('Header logo preview', 'viora'); ?>">
                             <?php endif; ?>
                         </div>
                     </td>
@@ -34,18 +38,11 @@
                         <label for="viora_header_title"><?php echo esc_html__('Title', 'viora'); ?></label>
                     </th>
                     <td>
-                        <input type="text" id="viora_header_title" name="viora_header_title" class="regular-text" value="<?php echo esc_attr($text); ?>">
+                        <input type="text" id="viora_header_title" name="viora_header_title" class="regular-text"
+                            value="<?php echo esc_attr($title); ?>">
                     </td>
                 </tr>
 
-                <tr>
-                    <th scope="row">
-                        <label for="viora_header_description"><?php echo esc_html__('Description', 'viora'); ?></label>
-                    </th>
-                    <td>
-                        <textarea id="viora_header_description" name="viora_header_description" class="large-text" rows="4"><?php echo esc_textarea($desc); ?></textarea>
-                    </td>
-                </tr>
             </tbody>
         </table>
 

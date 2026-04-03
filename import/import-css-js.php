@@ -51,21 +51,21 @@ function viora_enqueue_custom_assets()
     $asset_map = array(
         array(
             'type'      => 'style',
-            'handle'    => 'viora-style',
-            'src'       => get_stylesheet_uri(),
-            'deps'      => array(),
-            'ver'       => $version,
-            'in_footer' => false,
-            'condition' => true,
-        ),
-        array(
-            'type'      => 'style',
             'handle'    => 'viora-reset-style',
             'src'       => get_theme_file_uri('/assets/css/_reset.css'),
             'deps'      => array(),
-            'ver'       => $version,
+            'ver'       => filemtime(get_theme_file_path('/assets/css/_reset.css')),
             'in_footer' => false,
             'condition' => file_exists(get_theme_file_path('/assets/css/_reset.css')),
+        ),
+        array(
+            'type'      => 'style',
+            'handle'    => 'viora-style',
+            'src'       => get_stylesheet_uri(),
+            'deps'      => array('viora-reset-style'),
+            'ver'       => $version,
+            'in_footer' => false,
+            'condition' => true,
         ),
         array(
             'type'      => 'style',

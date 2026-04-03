@@ -46,6 +46,15 @@
   text-decoration: none;
 }
 
+.site-brand--hidden {
+  display: none;
+}
+
+.site-brand__logo-wrap.is-hidden,
+.site-brand__text.is-hidden {
+  display: none;
+}
+
 .site-brand__logo-wrap {
   display: inline-flex;
   align-items: center;
@@ -354,7 +363,7 @@ body.mobile-sidebar-open {
 
 /* ==================== RESPONSIVE BREAKPOINTS ==================== */
 
-@media (max-width: 1024px) {
+@media (max-width: 639.98px) {
   .site-header__inner {
     padding: 1rem 1.25rem;
     min-height: 4.5rem;
@@ -389,7 +398,7 @@ body.mobile-sidebar-open {
   }
 }
 
-@media (max-width: 782px) {
+@media (max-width: 639.98px) {
   .admin-bar .site-header {
     top: 2.875rem; /* 46px */
   }

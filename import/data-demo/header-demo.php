@@ -3,14 +3,10 @@ function viora_import_header_demo()
 {
     $logo_id = (int) get_theme_mod('header_logo', 0);
     $title = (string) get_theme_mod('viora_header_title', '');
-    $desc = (string) get_theme_mod('viora_header_description', '');
     if ($title === '') {
         $title = (string) get_theme_mod('header_text', '');
     }
-    if ($desc === '') {
-        $desc = (string) get_theme_mod('header_description', '');
-    }
-    if ($logo_id || $title !== '' || $desc !== '') {
+    if ($logo_id || $title !== '') {
         return;
     }
     if (function_exists('viora_import_parse_js')) {
@@ -29,13 +25,6 @@ function viora_import_header_demo()
                 if ($t !== '') {
                     set_theme_mod('viora_header_title', $t);
                     remove_theme_mod('header_text');
-                }
-            }
-            if (isset($data['description'])) {
-                $d = (string)$data['description'];
-                if ($d !== '') {
-                    set_theme_mod('viora_header_description', $d);
-                    remove_theme_mod('header_description');
                 }
             }
         }

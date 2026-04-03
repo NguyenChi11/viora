@@ -1,21 +1,16 @@
 <?php
 $logo_id = (int) get_theme_mod('header_logo', 0);
-$title = (string) get_theme_mod('viora_header_title', '');
+$title = trim((string) get_theme_mod('viora_header_title', ''));
 if ($title === '') {
-    $title = (string) get_theme_mod('header_text', '');
-}
-if (!is_scalar($title) || trim((string) $title) === '') {
-    $title = (string) get_bloginfo('name');
+    $title = trim((string) get_theme_mod('header_text', ''));
 }
 
-$description = (string) get_theme_mod('viora_header_description', '');
-if ($description === '') {
-    $description = (string) get_theme_mod('header_description', '');
-}
-
-$logo_url = $logo_id ? wp_get_attachment_image_url($logo_id, 'full') : '';
-if (!$logo_url) {
-    $logo_url = get_theme_file_uri('/assets/images/logo.png');
+$logo_url = $logo_id ? (string) wp_get_attachment_image_url($logo_id, 'full') : '';
+$has_logo = $logo_url !== '';
+$has_title = $title !== '';
+$brand_class = 'site-brand';
+if (!$has_logo && !$has_title) {
+    $brand_class .= ' site-brand--hidden';
 }
 
 $cart_url = home_url('/cart/');
@@ -44,13 +39,15 @@ $contact_url = $contact_page ? get_permalink($contact_page->ID) : home_url('/con
 <header id="masthead" class="site-header">
     <div class="site-header__inner">
         <div class="site-header__inner--left">
-            <a class="site-brand" href="<?php echo esc_url(home_url('/')); ?>"
+            <a class="<?php echo esc_attr($brand_class); ?>" href="<?php echo esc_url(home_url('/')); ?>"
                 aria-label="<?php esc_attr_e('Back to home', 'viora'); ?>">
-                <span class="site-brand__logo-wrap">
-                    <img class="site-brand__logo" src="<?php echo esc_url($logo_url); ?>"
-                        alt="<?php echo esc_attr($title); ?>">
+                <span class="site-brand__logo-wrap<?php echo $has_logo ? '' : ' is-hidden'; ?>">
+                    <?php if ($has_logo): ?>
+                        <img class="site-brand__logo" src="<?php echo esc_url($logo_url); ?>"
+                            alt="<?php echo esc_attr($has_title ? $title : get_bloginfo('name')); ?>">
+                    <?php endif; ?>
                 </span>
-                <span class="site-brand__text"><?php echo esc_html($title); ?></span>
+                <span class="site-brand__text<?php echo $has_title ? '' : ' is-hidden'; ?>"><?php echo esc_html($title); ?></span>
             </a>
 
             <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="mobile-sidebar">

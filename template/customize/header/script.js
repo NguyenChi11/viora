@@ -68,22 +68,19 @@
   if (wp && wp.customize) {
     wp.customize("viora_header_title", function (value) {
       value.bind(function (to) {
+        var brand = document.querySelector(".site-brand");
+        var logoWrap = document.querySelector(".site-brand__logo-wrap");
         var textNode = document.querySelector(".site-brand__text");
         if (!textNode) return;
 
         var nextText = String(to || "").trim();
-        if (!nextText || nextText === "0" || nextText === "1") {
-          nextText =
-            window.headerData && window.headerData.title
-              ? window.headerData.title
-              : "";
-        }
-
-        if (!nextText) {
-          nextText = document.title || "";
-        }
-
         textNode.textContent = nextText;
+        textNode.classList.toggle("is-hidden", !nextText);
+
+        if (brand) {
+          var hasLogo = !!(logoWrap && logoWrap.querySelector("img"));
+          brand.classList.toggle("site-brand--hidden", !hasLogo && !nextText);
+        }
       });
     });
 

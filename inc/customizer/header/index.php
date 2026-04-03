@@ -15,7 +15,6 @@ function viora_customize_register_header($wp_customize)
     $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'header_logo', array(
         'label'       => __('Logo', 'viora'),
         'section'     => 'viora_header_section',
-        'description' => __('Please use a square logo for best display.', 'viora'),
         'mime_type'   => 'image',
     )));
 
@@ -31,25 +30,16 @@ function viora_customize_register_header($wp_customize)
         'type'    => 'text',
     ));
 
-    $wp_customize->add_setting('viora_header_description', array(
-        'default'           => '',
-        'transport'         => 'postMessage',
-        'sanitize_callback' => 'sanitize_textarea_field',
-    ));
-
-    $wp_customize->add_control('viora_header_description', array(
-        'label'   => __('Description', 'viora'),
-        'section' => 'viora_header_section',
-        'type'    => 'textarea',
-    ));
-
     if (isset($wp_customize->selective_refresh)) {
         $wp_customize->selective_refresh->add_partial('header_logo', array(
             'selector'        => '.site-brand__logo-wrap',
             'settings'        => array('header_logo'),
             'render_callback' => function () {
                 $logo_id = (int) get_theme_mod('header_logo', 0);
-                $logo_url = $logo_id ? wp_get_attachment_image_url($logo_id, 'full') : get_theme_file_uri('/assets/images/logo.png');
+                $logo_url = $logo_id ? wp_get_attachment_image_url($logo_id, 'full') : '';
+                if (!$logo_url) {
+                    return '';
+                }
                 return '<img class="site-brand__logo" src="' . esc_url($logo_url) . '" alt="' . esc_attr(get_bloginfo('name')) . '">';
             },
         ));
@@ -125,13 +115,9 @@ add_action('admin_enqueue_scripts', 'viora_header_admin_enqueue');
 function viora_header_admin_page()
 {
     $logo_id = (int) get_theme_mod('header_logo', 0);
-    $text = (string) get_theme_mod('viora_header_title', '');
-    if ($text === '') {
-        $text = (string) get_theme_mod('header_text', '');
-    }
-    $desc = (string) get_theme_mod('viora_header_description', '');
-    if ($desc === '') {
-        $desc = (string) get_theme_mod('header_description', '');
+    $title = (string) get_theme_mod('viora_header_title', '');
+    if ($title === '') {
+        $title = (string) get_theme_mod('header_text', '');
     }
     $logo_url = $logo_id ? wp_get_attachment_image_url($logo_id, 'thumbnail') : '';
 
@@ -149,7 +135,7 @@ function viora_handle_header_save()
     $logo_raw = isset($_POST['header_logo']) ? wp_unslash($_POST['header_logo']) : '';
     $logo = absint($logo_raw);
     $text = isset($_POST['viora_header_title']) ? sanitize_text_field(wp_unslash($_POST['viora_header_title'])) : '';
-    $desc = isset($_POST['viora_header_description']) ? sanitize_textarea_field(wp_unslash($_POST['viora_header_description'])) : '';
+
 
     if ($logo_raw === '' || $logo === 0) {
         remove_theme_mod('header_logo');
@@ -165,13 +151,6 @@ function viora_handle_header_save()
         remove_theme_mod('header_text');
     }
 
-    if ($desc === '') {
-        remove_theme_mod('viora_header_description');
-        remove_theme_mod('header_description');
-    } else {
-        set_theme_mod('viora_header_description', $desc);
-        remove_theme_mod('header_description');
-    }
 
     wp_safe_redirect(admin_url('themes.php?page=viora-header&updated=1'));
     exit;
