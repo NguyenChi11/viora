@@ -41,6 +41,11 @@ function viora_enqueue_custom_assets()
 {
     $version = WP_DEBUG ? time() : wp_get_theme()->get('Version');
 
+    $is_home_context = (
+        is_front_page()
+        || is_page_template('home-page.php')
+    );
+
     $is_aos_context = (
         is_front_page()
         || is_page_template('home-page.php')
@@ -75,6 +80,24 @@ function viora_enqueue_custom_assets()
             'ver'       => $version,
             'in_footer' => false,
             'condition' => file_exists(get_theme_file_path('/assets/css/global.css')),
+        ),
+        array(
+            'type'      => 'style',
+            'handle'    => 'viora-home-banner-style',
+            'src'       => get_theme_file_uri('/template/template-parts/page/home/section-banner/style.css'),
+            'deps'      => array('viora-global-style'),
+            'ver'       => $version,
+            'in_footer' => false,
+            'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-banner/style.css')),
+        ),
+        array(
+            'type'      => 'script',
+            'handle'    => 'viora-home-banner-script',
+            'src'       => get_theme_file_uri('/template/template-parts/page/home/section-banner/script.js'),
+            'deps'      => array('viora-gsap'),
+            'ver'       => $version,
+            'in_footer' => true,
+            'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-banner/script.js')),
         ),
         array(
             'type'      => 'style',

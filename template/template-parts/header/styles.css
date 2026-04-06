@@ -353,12 +353,7 @@ body.mobile-sidebar-open {
 }
 
 .admin-bar .mobile-sidebar {
-  top: 32px;
-  height: calc(100dvh - 32px);
-}
-
-.admin-bar .mobile-sidebar-backdrop {
-  top: 32px;
+  height: 100dvh;
 }
 
 /* ==================== RESPONSIVE BREAKPOINTS ==================== */
@@ -387,29 +382,6 @@ body.mobile-sidebar-open {
   .mobile-menu-toggle {
     display: inline-flex;
     flex-shrink: 0;
-  }
-
-  .mobile-sidebar {
-    width: min(24rem, 92vw);
-  }
-
-  .admin-bar .site-header {
-    top: 2rem;
-  }
-}
-
-@media (max-width: 639.98px) {
-  .admin-bar .site-header {
-    top: 2.875rem; /* 46px */
-  }
-
-  .admin-bar .mobile-sidebar {
-    top: 46px;
-    height: calc(100dvh - 46px);
-  }
-
-  .admin-bar .mobile-sidebar-backdrop {
-    top: 46px;
   }
 }
 

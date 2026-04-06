@@ -35,4 +35,7 @@ function viora_require_file($relative_path)
 viora_require_file('/import/import-css-js.php');
 viora_require_file('/inc/functions/demo-function.php');
 viora_require_file('/inc/functions/header-function.php');
+viora_require_file('/inc/functions/page/home-page.php');
 viora_require_file('/inc/customizer/header/index.php');
+viora_require_file('/inc/customizer/home-page/index.php');
+viora_require_file('/inc/meta-box/page/home/index.php');

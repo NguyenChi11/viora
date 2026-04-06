@@ -102,8 +102,20 @@ html::-webkit-scrollbar-track,
 
 html::-webkit-scrollbar-thumb,
 .custom-scroll::-webkit-scrollbar-thumb {
-  background: var(--color-brand, #d32131);
+  background: var(--color-brand, rgba(59, 25, 230, 1));
   border-radius: 1.5rem;
+}
+
+/* Hide page scrollbar while mobile sidebar is open */
+html.mobile-sidebar-open,
+body.mobile-sidebar-open {
+  overflow: hidden !important;
+}
+
+html.mobile-sidebar-open::-webkit-scrollbar,
+body.mobile-sidebar-open::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 /* Hide scrollbar */

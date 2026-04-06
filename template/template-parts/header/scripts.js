@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (backdrop) {
       backdrop.classList.add("visible");
     }
+    document.documentElement.classList.add("mobile-sidebar-open");
     document.body.classList.add("mobile-sidebar-open");
     if (toggleBtn) {
       toggleBtn.setAttribute("aria-expanded", "true");
@@ -34,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (backdrop) {
       backdrop.classList.remove("visible");
     }
+    document.documentElement.classList.remove("mobile-sidebar-open");
     document.body.classList.remove("mobile-sidebar-open");
     if (toggleBtn) {
       toggleBtn.setAttribute("aria-expanded", "false");
