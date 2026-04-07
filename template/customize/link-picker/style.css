@@ -1,0 +1,245 @@
+/* ─────────────────────────────────────────────────────────────
+   viora-link-popup
+   Rendered inside WP Customizer sidebar (~300 px wide)
+   → flat section layout, NOT a floating popup
+───────────────────────────────────────────────────────────── */
+
+.viora-link-popup {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu,
+    Cantarell, "Helvetica Neue", sans-serif;
+  color: #1d2327;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Fields ─────────────────────────────────────────────────── */
+.viora-banner-field {
+  margin: 0 0 12px;
+}
+
+.viora-banner-field label {
+  display: block;
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #646970;
+}
+
+.viora-banner-field input[type="url"] {
+  margin-bottom: 0.25rem;
+}
+
+.viora-banner-field input[type="url"],
+.viora-banner-field input[type="text"],
+#viora-link-search {
+  width: 100%;
+  padding: 5px 8px;
+  border: 1px solid #8c8f94;
+  border-radius: 3px;
+  font-size: 13px;
+  line-height: 1.5;
+  background: #fff;
+  box-sizing: border-box;
+  transition:
+    border-color 0.1s,
+    box-shadow 0.1s;
+}
+
+.viora-banner-field input[type="url"]:focus,
+.viora-banner-field input[type="text"]:focus,
+#viora-link-search:focus {
+  border-color: var(--wp-admin-theme-color, #2271b1);
+  box-shadow: 0 0 0 1px var(--wp-admin-theme-color, #2271b1);
+  outline: none;
+}
+
+/* Checkbox */
+.viora-banner-field label input[type="checkbox"] {
+  margin-right: 6px;
+  width: 14px;
+  height: 14px;
+  vertical-align: -2px;
+}
+
+/* ── Section heading ────────────────────────────────────────── */
+.viora-link-popup h4 {
+  margin: 16px 0 8px;
+  padding: 0;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #646970;
+  border: none;
+}
+
+/* ── Results list ───────────────────────────────────────────── */
+#viora-link-results {
+  width: 100%;
+  max-height: 260px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid #dcdcde;
+  border-radius: 3px;
+  background: #fff;
+  margin: 4px 0 12px;
+  box-sizing: border-box;
+}
+
+#viora-link-results .result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 7px 10px;
+  border-bottom: 1px solid #f0f0f1;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+#viora-link-results .result:last-child {
+  border-bottom: none;
+}
+
+#viora-link-results .result:hover,
+#viora-link-results .result:focus-within {
+  background: #f0f6fc;
+}
+
+/* Info column – works for both PHP-rendered divs and JS .result-info */
+#viora-link-results .result > div:first-child,
+#viora-link-results .result > .result-info {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* Title row */
+#viora-link-results .result > div:first-child > div:first-child,
+#viora-link-results .result-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1d2327;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Type chip */
+#viora-link-results .chip {
+  display: inline-block;
+  margin-left: 5px;
+  padding: 1px 5px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  background: #646970;
+  border-radius: 10px;
+  vertical-align: middle;
+  line-height: 1.4;
+}
+
+/* URL meta */
+#viora-link-results .meta {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #8c8f94;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Select button inside each row ─────────────────────────── */
+.viora-link-pick {
+  flex-shrink: 0;
+  background: #2271b1;
+  border: 1px solid #135e96;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 0 8px;
+  height: 26px;
+  line-height: 24px;
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.viora-link-pick:hover,
+.viora-link-pick:focus {
+  background: #135e96;
+  border-color: #0a4b78;
+  outline: none;
+}
+
+/* Selected row highlight */
+#viora-link-results .result.selected {
+  background: #f0f6fc;
+}
+
+#viora-link-results .result.selected .result-title,
+#viora-link-results .result.selected > div:first-child > div:first-child {
+  color: #2271b1;
+}
+
+/* ── Actions bar ────────────────────────────────────────────── */
+.viora-link-popup .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 0 4px;
+  border-top: 1px solid #dcdcde;
+  margin-top: 4px;
+}
+
+#viora-link-apply {
+  background: var(--wp-admin-theme-color, #2271b1);
+  border: 1px solid var(--wp-admin-theme-color, #135e96);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 0 14px;
+  height: 30px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#viora-link-apply:hover,
+#viora-link-apply:focus {
+  background: var(--wp-admin-theme-color-darker-10, #1a67a3);
+  outline: none;
+}
+
+#viora-link-close {
+  background: #fff;
+  border: 1px solid #8c8f94;
+  color: #1d2327;
+  font-size: 13px;
+  padding: 0 14px;
+  height: 30px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#viora-link-close:hover,
+#viora-link-close:focus {
+  background: #f6f7f7;
+  outline: none;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+#viora-link-results::-webkit-scrollbar {
+  width: 6px;
+}
+
+#viora-link-results::-webkit-scrollbar-thumb {
+  background: #c3c4c7;
+  border-radius: 3px;
+}
+
+#viora-link-results::-webkit-scrollbar-track {
+  background: #f6f7f7;
+}

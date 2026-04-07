@@ -69,15 +69,15 @@
 
   // ---- AJAX: update single item qty ----
   function doUpdateCartQty(cartKey, qty, onSuccess) {
-    if (!window.buildproCart || !window.buildproCart.ajaxUrl) {
-      return; // buildproCart not available — keep UI as-is, no reload
+    if (!window.vioraCart || !window.vioraCart.ajaxUrl) {
+      return; // vioraCart not available — keep UI as-is, no reload
     }
     var fd = new FormData();
-    fd.append("action", "buildpro_update_cart_qty");
-    fd.append("nonce", window.buildproCart.nonce);
+    fd.append("action", "viora_update_cart_qty");
+    fd.append("nonce", window.vioraCart.nonce);
     fd.append("cart_key", cartKey);
     fd.append("qty", qty);
-    fetch(window.buildproCart.ajaxUrl, {
+    fetch(window.vioraCart.ajaxUrl, {
       method: "POST",
       body: fd,
       credentials: "same-origin",
@@ -87,7 +87,7 @@
       })
       .then(function (data) {
         if (data && data.data && data.data.nonce) {
-          window.buildproCart.nonce = data.data.nonce;
+          window.vioraCart.nonce = data.data.nonce;
         }
         if (data && data.success && data.data) {
           if (dropdown && typeof data.data.html === "string") {
@@ -96,8 +96,8 @@
             bindQtySteppers();
             bindDeleteBtns();
           }
-          if (typeof window.buildproUpdateCartBadge === "function") {
-            window.buildproUpdateCartBadge(data.data.count);
+          if (typeof window.vioraUpdateCartBadge === "function") {
+            window.vioraUpdateCartBadge(data.data.count);
           }
           if (typeof onSuccess === "function") onSuccess();
         }
@@ -110,7 +110,7 @@
 
   // ---- Delete item via AJAX ----
   function doRemoveCartItem(cartKey, removeUrl, itemEl) {
-    if (!window.buildproCart || !window.buildproCart.ajaxUrl) {
+    if (!window.vioraCart || !window.vioraCart.ajaxUrl) {
       // Fallback: navigate to WC remove URL directly
       window.location.href = removeUrl;
       return;
@@ -119,11 +119,11 @@
 
     // Use WC ajax remove endpoint via POST for reliability
     var fd = new FormData();
-    fd.append("action", "buildpro_remove_cart_item");
-    fd.append("nonce", window.buildproCart.nonce);
+    fd.append("action", "viora_remove_cart_item");
+    fd.append("nonce", window.vioraCart.nonce);
     fd.append("cart_key", cartKey);
 
-    fetch(window.buildproCart.ajaxUrl, {
+    fetch(window.vioraCart.ajaxUrl, {
       method: "POST",
       body: fd,
       credentials: "same-origin",
@@ -133,7 +133,7 @@
       })
       .then(function (data) {
         if (data && data.data && data.data.nonce) {
-          window.buildproCart.nonce = data.data.nonce;
+          window.vioraCart.nonce = data.data.nonce;
         }
         if (data && data.success && data.data) {
           if (dropdown && typeof data.data.html === "string") {
@@ -142,8 +142,8 @@
             bindQtySteppers();
             bindDeleteBtns();
           }
-          if (typeof window.buildproUpdateCartBadge === "function") {
-            window.buildproUpdateCartBadge(data.data.count);
+          if (typeof window.vioraUpdateCartBadge === "function") {
+            window.vioraUpdateCartBadge(data.data.count);
           }
         } else {
           // Remove from DOM optimistically if AJAX fails
@@ -209,14 +209,14 @@
 
   // ---- Refresh mini cart inner HTML via AJAX ----
   function refreshMiniCart(showAfter) {
-    if (!window.buildproCart || !window.buildproCart.ajaxUrl) return;
+    if (!window.vioraCart || !window.vioraCart.ajaxUrl) return;
     if (dropdown) dropdown.classList.add("header-cart-dropdown--loading");
 
     var fd = new FormData();
-    fd.append("action", "buildpro_mini_cart");
-    fd.append("nonce", window.buildproCart.nonce);
+    fd.append("action", "viora_mini_cart");
+    fd.append("nonce", window.vioraCart.nonce);
 
-    fetch(window.buildproCart.ajaxUrl, {
+    fetch(window.vioraCart.ajaxUrl, {
       method: "POST",
       body: fd,
       credentials: "same-origin",
@@ -228,7 +228,7 @@
         if (dropdown)
           dropdown.classList.remove("header-cart-dropdown--loading");
         if (data && data.data && data.data.nonce) {
-          window.buildproCart.nonce = data.data.nonce;
+          window.vioraCart.nonce = data.data.nonce;
         }
         if (data && data.success && data.data) {
           if (dropdown && typeof data.data.html === "string") {
@@ -239,9 +239,9 @@
           }
           if (
             typeof data.data.count !== "undefined" &&
-            typeof window.buildproUpdateCartBadge === "function"
+            typeof window.vioraUpdateCartBadge === "function"
           ) {
-            window.buildproUpdateCartBadge(data.data.count);
+            window.vioraUpdateCartBadge(data.data.count);
           }
         }
         if (showAfter) show();
@@ -259,5 +259,5 @@
   bindDeleteBtns();
 
   // Expose globally for cart.js to call after add_to_cart
-  window.buildproRefreshMiniCart = refreshMiniCart;
+  window.vioraRefreshMiniCart = refreshMiniCart;
 })();

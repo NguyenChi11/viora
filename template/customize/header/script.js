@@ -66,6 +66,53 @@
   }
 
   if (wp && wp.customize) {
+    var contactState = {
+      text: "",
+      url: "",
+      newTab: false,
+    };
+
+    function toBool(value) {
+      return value === true || value === 1 || value === "1";
+    }
+
+    function applyContactState() {
+      var buttons = document.querySelectorAll("a.header-contact-btn");
+      Array.prototype.forEach.call(buttons, function (button) {
+        if (!button.dataset.vioraDefaultHref) {
+          button.dataset.vioraDefaultHref = button.getAttribute("href") || "";
+        }
+        if (!button.dataset.vioraDefaultText) {
+          button.dataset.vioraDefaultText = button.textContent || "";
+        }
+
+        var nextHref =
+          contactState.url || button.dataset.vioraDefaultHref || "";
+        var nextText =
+          contactState.text || button.dataset.vioraDefaultText || "Contact Now";
+
+        button.setAttribute("href", nextHref);
+        button.textContent = nextText;
+
+        if (contactState.newTab) {
+          button.setAttribute("target", "_blank");
+          button.setAttribute("rel", "noopener");
+        } else {
+          button.removeAttribute("target");
+          button.removeAttribute("rel");
+        }
+      });
+    }
+
+    function bindSetting(settingId, onChange) {
+      try {
+        wp.customize(settingId, function (value) {
+          onChange(value.get());
+          value.bind(onChange);
+        });
+      } catch (e) {}
+    }
+
     wp.customize("viora_header_title", function (value) {
       value.bind(function (to) {
         var brand = document.querySelector(".site-brand");
@@ -90,6 +137,21 @@
           wp.customize.selectiveRefresh.requestFullRefresh();
         }
       });
+    });
+
+    bindSetting("viora_header_contact_link_text", function (to) {
+      contactState.text = String(to || "").trim();
+      applyContactState();
+    });
+
+    bindSetting("viora_header_contact_link_url", function (to) {
+      contactState.url = String(to || "").trim();
+      applyContactState();
+    });
+
+    bindSetting("viora_header_contact_link_new_tab", function (to) {
+      contactState.newTab = toBool(to);
+      applyContactState();
     });
   }
 })(window.wp);

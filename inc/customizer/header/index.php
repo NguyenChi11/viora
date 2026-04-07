@@ -30,6 +30,60 @@ function viora_customize_register_header($wp_customize)
         'type'    => 'text',
     ));
 
+    $wp_customize->add_setting('viora_header_contact_link_text', array(
+        'default'           => '',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    $wp_customize->add_control('viora_header_contact_link_text', array(
+        'label'   => __('Contact Button Text', 'viora'),
+        'section' => 'viora_header_section',
+        'type'    => 'text',
+    ));
+
+    $wp_customize->add_setting('viora_header_contact_link_url', array(
+        'default'           => '',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+
+    $wp_customize->add_control('viora_header_contact_link_url', array(
+        'label'   => __('Contact Button URL', 'viora'),
+        'section' => 'viora_header_section',
+        'type'    => 'url',
+    ));
+
+    $wp_customize->add_setting('viora_header_contact_link_new_tab', array(
+        'default'           => 0,
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'absint',
+    ));
+
+    $wp_customize->add_control('viora_header_contact_link_new_tab', array(
+        'label'   => __('Open contact button in new tab', 'viora'),
+        'section' => 'viora_header_section',
+        'type'    => 'checkbox',
+    ));
+
+    $wp_customize->add_setting('viora_header_contact_choose_link_dummy', array(
+        'default'           => '',
+        'transport'         => 'postMessage',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+
+    if (class_exists('Viora_Choose_Link_Control')) {
+        $wp_customize->add_control(new Viora_Choose_Link_Control($wp_customize, 'viora_header_contact_choose_link_dummy', array(
+            'label'          => __('Choose Contact Link', 'viora'),
+            'description'    => __('Pick contact button URL and text from existing content.', 'viora'),
+            'section'        => 'viora_header_section',
+            'url_setting'    => 'viora_header_contact_link_url',
+            'title_setting'  => 'viora_header_contact_link_text',
+            'target_setting' => 'viora_header_contact_link_new_tab',
+            'return_section' => 'viora_header_section',
+        )));
+    }
+
     if (isset($wp_customize->selective_refresh)) {
         $wp_customize->selective_refresh->add_partial('header_logo', array(
             'selector'        => '.site-brand__logo-wrap',

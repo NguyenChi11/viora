@@ -34,6 +34,18 @@ if (!$contact_page) {
     $contact_page = get_page_by_path('contact');
 }
 $contact_url = $contact_page ? get_permalink($contact_page->ID) : home_url('/contact-us/');
+$contact_custom_url = trim((string) get_theme_mod('viora_header_contact_link_url', ''));
+if ($contact_custom_url !== '') {
+    $contact_url = $contact_custom_url;
+}
+
+$contact_text = trim((string) get_theme_mod('viora_header_contact_link_text', ''));
+if ($contact_text === '') {
+    $contact_text = __('Contact Now', 'viora');
+}
+
+$contact_new_tab = (int) get_theme_mod('viora_header_contact_link_new_tab', 0) === 1;
+$contact_target_attr = $contact_new_tab ? ' target="_blank" rel="noopener"' : '';
 ?>
 
 <header id="masthead" class="site-header">
@@ -83,8 +95,8 @@ $contact_url = $contact_page ? get_permalink($contact_page->ID) : home_url('/con
                     class="header-cart-count<?php echo $cart_count === 0 ? ' header-cart-count--hidden' : ''; ?>"><?php echo esc_html($cart_count); ?></span>
             </a>
 
-            <a href="<?php echo esc_url($contact_url); ?>"
-                class="header-contact-btn"><?php esc_html_e('Contact Now', 'viora'); ?></a>
+            <a href="<?php echo esc_url($contact_url); ?>" <?php echo $contact_target_attr; ?>
+                class="header-contact-btn"><?php echo esc_html($contact_text); ?></a>
         </div>
     </div>
 
@@ -108,8 +120,8 @@ $contact_url = $contact_page ? get_permalink($contact_page->ID) : home_url('/con
             <div class="mobile-sidebar__actions">
                 <a href="<?php echo esc_url($cart_url); ?>"
                     class="mobile-cart-link"><?php esc_html_e('View Cart', 'viora'); ?></a>
-                <a href="<?php echo esc_url($contact_url); ?>"
-                    class="header-contact-btn"><?php esc_html_e('Contact Now', 'viora'); ?></a>
+                <a href="<?php echo esc_url($contact_url); ?>" <?php echo $contact_target_attr; ?>
+                    class="header-contact-btn"><?php echo esc_html($contact_text); ?></a>
             </div>
         </div>
     </aside>

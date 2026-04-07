@@ -206,6 +206,47 @@
       );
     }
 
+    function openBannerLinkPicker(urlInput, titleInput) {
+      if (
+        window.vioraOpenLinkPicker &&
+        typeof window.vioraOpenLinkPicker === "function"
+      ) {
+        window.vioraOpenLinkPicker(
+          urlInput || null,
+          titleInput || null,
+          null,
+          "viora_home_banner_section",
+        );
+        return;
+      }
+
+      if (
+        !window.wp ||
+        !wp.customize ||
+        typeof wp.customize.section !== "function"
+      ) {
+        return;
+      }
+
+      var targetObj = {
+        sectionId: "viora_home_banner_section",
+        urlInput: urlInput || null,
+        titleInput: titleInput || null,
+        targetSelect: null,
+        currentUrl: urlInput ? urlInput.value || "" : "",
+        currentTitle: titleInput ? titleInput.value || "" : "",
+        currentTarget: "",
+      };
+
+      window.vioraLinkTarget = targetObj;
+      window.vioraLinkTarget = targetObj;
+
+      var linkPickerSection = wp.customize.section("viora_link_picker_section");
+      if (linkPickerSection && typeof linkPickerSection.expand === "function") {
+        linkPickerSection.expand();
+      }
+    }
+
     function getHintForPath(path) {
       if (!path) {
         return "";
@@ -448,6 +489,26 @@
       });
     }
 
+    function bindChooseLinkButtons() {
+      var buttons = root.querySelectorAll(".viora-banner-choose-link");
+      Array.prototype.forEach.call(buttons, function (btn) {
+        btn.addEventListener("click", function (event) {
+          event.preventDefault();
+
+          var urlPath = btn.getAttribute("data-url-path") || "";
+          var titlePath = btn.getAttribute("data-title-path") || "";
+          var urlInput = urlPath
+            ? root.querySelector('.viora-field[data-path="' + urlPath + '"]')
+            : null;
+          var titleInput = titlePath
+            ? root.querySelector('.viora-field[data-path="' + titlePath + '"]')
+            : null;
+
+          openBannerLinkPicker(urlInput, titleInput);
+        });
+      });
+    }
+
     function bindSettingUpdates() {
       if (!setting || typeof setting.bind !== "function") {
         return;
@@ -482,6 +543,7 @@
 
     hydrateSimpleFields();
     bindFields();
+    bindChooseLinkButtons();
     bindMedia();
     bindSettingUpdates();
     writeData({ syncSetting: false, emitEvents: false });

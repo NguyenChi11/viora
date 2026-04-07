@@ -42,6 +42,11 @@ if (!function_exists('viora_home_banner_meta_box_content')) {
             : array();
 
         wp_enqueue_media();
+        if (function_exists('wp_enqueue_editor')) {
+            wp_enqueue_editor();
+        }
+        wp_enqueue_script('wplink');
+        wp_enqueue_style('wp-link');
         wp_enqueue_style(
             'viora-home-banner-meta-style',
             get_theme_file_uri('/template/meta-box/page/home/section-banner/style.css'),
@@ -51,7 +56,7 @@ if (!function_exists('viora_home_banner_meta_box_content')) {
         wp_enqueue_script(
             'viora-home-banner-meta-script',
             get_theme_file_uri('/template/meta-box/page/home/section-banner/script.js'),
-            array(),
+            array('wplink'),
             null,
             true
         );

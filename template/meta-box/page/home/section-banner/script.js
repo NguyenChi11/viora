@@ -277,9 +277,169 @@
       });
     }
 
+    function getWpLinkObject() {
+      if (
+        typeof wpLink !== "undefined" &&
+        wpLink &&
+        typeof wpLink.open === "function"
+      ) {
+        return wpLink;
+      }
+
+      if (
+        window.wp &&
+        window.wp.link &&
+        typeof window.wp.link.open === "function"
+      ) {
+        return window.wp.link;
+      }
+
+      return null;
+    }
+
+    function applyLinkSelection(urlInput, titleInput, urlValue, titleValue) {
+      if (urlInput) {
+        urlInput.value = urlValue || "";
+        var urlPath = urlInput.getAttribute("data-path");
+        if (urlPath) {
+          setByPath(data, urlPath, urlInput.value);
+        }
+      }
+
+      if (titleInput) {
+        titleInput.value = titleValue || "";
+        var titlePath = titleInput.getAttribute("data-path");
+        if (titlePath) {
+          setByPath(data, titlePath, titleInput.value);
+        }
+      }
+
+      writeData();
+    }
+
+    function openLinkPicker(urlInput, titleInput) {
+      var wpLinkObj = getWpLinkObject();
+      if (!wpLinkObj || !urlInput) {
+        return;
+      }
+
+      try {
+        wpLinkObj.open();
+      } catch (e) {
+        return;
+      }
+
+      var urlField = document.getElementById("wp-link-url");
+      var textField = document.getElementById("wp-link-text");
+      var submit = document.getElementById("wp-link-submit");
+      var cancel = document.getElementById("wp-link-cancel");
+      var originalUpdate =
+        typeof wpLinkObj.update === "function" ? wpLinkObj.update : null;
+      var cleaned = false;
+
+      if (urlField) {
+        urlField.value = urlInput.value || "";
+      }
+
+      if (textField && titleInput) {
+        textField.value = titleInput.value || "";
+      }
+
+      function cleanup() {
+        if (cleaned) {
+          return;
+        }
+        cleaned = true;
+
+        if (submit) {
+          submit.removeEventListener("click", submitHandler, true);
+        }
+
+        if (cancel) {
+          cancel.removeEventListener("click", cancelHandler, true);
+        }
+
+        if (originalUpdate) {
+          wpLinkObj.update = originalUpdate;
+        }
+      }
+
+      function applyFromDialog() {
+        applyLinkSelection(
+          urlInput,
+          titleInput,
+          urlField ? urlField.value : "",
+          textField ? textField.value : "",
+        );
+      }
+
+      function submitHandler(event) {
+        if (event && event.preventDefault) {
+          event.preventDefault();
+        }
+        if (event && event.stopPropagation) {
+          event.stopPropagation();
+        }
+        if (event && event.stopImmediatePropagation) {
+          event.stopImmediatePropagation();
+        }
+
+        applyFromDialog();
+        cleanup();
+
+        if (typeof wpLinkObj.close === "function") {
+          wpLinkObj.close();
+        }
+      }
+
+      function cancelHandler() {
+        cleanup();
+      }
+
+      if (originalUpdate) {
+        wpLinkObj.update = function () {
+          applyFromDialog();
+          cleanup();
+
+          if (typeof wpLinkObj.close === "function") {
+            wpLinkObj.close();
+          }
+        };
+      }
+
+      if (submit) {
+        submit.addEventListener("click", submitHandler, true);
+      }
+
+      if (cancel) {
+        cancel.addEventListener("click", cancelHandler, true);
+      }
+    }
+
+    function bindLinkPicker() {
+      var buttons = root.querySelectorAll(".viora-banner-choose-link");
+      Array.prototype.forEach.call(buttons, function (button) {
+        button.addEventListener("click", function (event) {
+          event.preventDefault();
+
+          var urlPath = button.getAttribute("data-url-path") || "";
+          var titlePath = button.getAttribute("data-title-path") || "";
+          var urlInput = urlPath
+            ? root.querySelector('.viora-field[data-path="' + urlPath + '"]')
+            : null;
+          var titleInput = titlePath
+            ? root.querySelector('.viora-field[data-path="' + titlePath + '"]')
+            : null;
+
+          openLinkPicker(urlInput, titleInput);
+        });
+      });
+    }
+
     hydrateSimpleFields();
     bindFields();
     bindMedia();
+    bindLinkPicker();
     writeData();
 
     var helpEnabled = readHelpMode();

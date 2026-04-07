@@ -1,40 +1,109 @@
 .viora-home-banner-editor {
   display: grid;
-  gap: 12px;
+  gap: 14px;
 }
 
-.viora-home-banner-editor__help-toggle {
-  margin: 0;
+.viora-home-banner-editor__top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding: 10px 12px;
+  border: 1px solid #dcdcde;
+  border-radius: 8px;
+  background: #f6f7f7;
 }
 
-.viora-home-banner-editor__help-toggle label {
+.viora-home-banner-editor__toggle {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-weight: 600;
+  color: #1d2327;
 }
 
 .viora-home-banner-editor__section {
-  border: 1px solid #dcdcde;
-  border-radius: 6px;
+  border: 1px solid #ccd0d4;
+  border-radius: 8px;
   background: #fff;
-  padding: 10px;
+  padding: 12px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
 }
 
 .viora-home-banner-editor__section h4 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+}
+
+.viora-action-card h5 {
   margin: 0 0 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.35px;
+  color: #50575e;
 }
 
-.viora-home-banner-editor__section p {
-  margin: 0 0 8px;
-}
-
-.viora-media-field {
+.viora-control {
   margin-bottom: 10px;
 }
 
+.viora-control:last-child {
+  margin-bottom: 0;
+}
+
+.viora-field-label {
+  display: block;
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d2327;
+}
+
+.viora-home-banner-editor .regular-text,
+.viora-home-banner-editor .large-text {
+  width: 100%;
+  max-width: none;
+}
+
+.viora-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.viora-control--full {
+  grid-column: 1 / -1;
+}
+
+.viora-action-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.viora-action-card {
+  border: 1px solid #e2e4e7;
+  border-radius: 8px;
+  background: #fbfbfc;
+  padding: 10px;
+}
+
+.viora-link-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.viora-link-row .regular-text {
+  flex: 1 1 auto;
+}
+
+.viora-media-field {
+  margin-bottom: 0;
+}
+
 .viora-media-actions {
-  margin-top: 6px;
+  margin-top: 8px;
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
@@ -42,18 +111,25 @@
 
 .viora-media-preview {
   margin-top: 8px;
-  min-height: 72px;
+  min-height: 78px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px dashed #dcdcde;
+  border: 1px dashed #c8ccd0;
   border-radius: 6px;
-  background: #f8f9fb;
+  background: #f6f7f7;
   color: #666;
 }
 
 .viora-media-preview img {
   max-width: 100%;
-  max-height: 120px;
+  max-height: 130px;
   object-fit: contain;
+}
+
+@media (min-width: 960px) {
+  .viora-grid-2,
+  .viora-action-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
