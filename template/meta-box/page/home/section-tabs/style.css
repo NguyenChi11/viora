@@ -1,0 +1,26 @@
+.viora-home-admin-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 12px;
+}
+
+.viora-home-admin-tabs .button {
+  margin: 0;
+  background: #f3f4f6;
+  border-color: #d9dde3;
+}
+
+.viora-home-admin-tabs .button.is-active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.viora-home-admin-panels {
+  display: block;
+}
+
+.viora-home-admin-panel[hidden] {
+  display: none;
+}

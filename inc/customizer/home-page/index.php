@@ -24,6 +24,12 @@ if (!function_exists('viora_home_get_inline_i18n_data')) {
             'mainImage' => __('Main image', 'viora'),
             'previewImage' => __('Preview image', 'viora'),
             'scrollHint' => __('Scroll hint', 'viora'),
+            'servicesEyebrow' => __('Services eyebrow', 'viora'),
+            'servicesTitle' => __('Services title', 'viora'),
+            'serviceIconImage' => __('Service icon image', 'viora'),
+            'serviceCardTitle' => __('Service title', 'viora'),
+            'serviceDescription' => __('Service description', 'viora'),
+            'serviceFeatures' => __('Service features', 'viora'),
             'helpHints' => array(
                 'eyebrow.icon_url' => __('Enter icon URL or choose an image from media.', 'viora'),
                 'eyebrow.text' => __('Short eyebrow text above the title.', 'viora'),
@@ -47,6 +53,28 @@ if (!function_exists('viora_home_get_inline_i18n_data')) {
                 'visual.stats.1.value' => __('Bottom stat value.', 'viora'),
                 'visual.stats.1.label' => __('Bottom stat label.', 'viora'),
                 'scrollHint' => __('Scroll hint text at the bottom of the banner.', 'viora'),
+                'eyebrow' => __('Small uppercase text above the services title.', 'viora'),
+                'title' => __('Main heading for the services section.', 'viora'),
+                'items.0.iconImage_url' => __('Optional custom icon image URL for card 1.', 'viora'),
+                'items.0.title' => __('Service card 1 title.', 'viora'),
+                'items.0.description' => __('Service card 1 description.', 'viora'),
+                'items.0.features' => __('Comma-separated features for card 1.', 'viora'),
+                'items.1.iconImage_url' => __('Optional custom icon image URL for card 2.', 'viora'),
+                'items.1.title' => __('Service card 2 title.', 'viora'),
+                'items.1.description' => __('Service card 2 description.', 'viora'),
+                'items.1.features' => __('Comma-separated features for card 2.', 'viora'),
+                'items.2.iconImage_url' => __('Optional custom icon image URL for card 3.', 'viora'),
+                'items.2.title' => __('Service card 3 title.', 'viora'),
+                'items.2.description' => __('Service card 3 description.', 'viora'),
+                'items.2.features' => __('Comma-separated features for card 3.', 'viora'),
+                'items.3.iconImage_url' => __('Optional custom icon image URL for card 4.', 'viora'),
+                'items.3.title' => __('Service card 4 title.', 'viora'),
+                'items.3.description' => __('Service card 4 description.', 'viora'),
+                'items.3.features' => __('Comma-separated features for card 4.', 'viora'),
+                'items.4.iconImage_url' => __('Optional custom icon image URL for card 5.', 'viora'),
+                'items.4.title' => __('Service card 5 title.', 'viora'),
+                'items.4.description' => __('Service card 5 description.', 'viora'),
+                'items.4.features' => __('Comma-separated features for card 5.', 'viora'),
             ),
         );
     }
@@ -66,3 +94,4 @@ if (!function_exists('viora_home_add_inline_i18n')) {
 }
 
 require get_template_directory() . '/inc/customizer/home-page/section-banner/index.php';
+require get_template_directory() . '/inc/customizer/home-page/section-serviecs/index.php';

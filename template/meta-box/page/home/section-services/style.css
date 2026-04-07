@@ -1,0 +1,330 @@
+.viora-home-services-editor {
+  display: grid;
+  gap: 14px;
+}
+
+.viora-home-services-editor__top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  padding: 10px 12px;
+  border: 1px solid #dcdcde;
+  border-radius: 8px;
+  background: #f6f7f7;
+}
+
+.viora-home-services-editor__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: #1d2327;
+}
+
+.viora-home-services-editor__section {
+  border: 1px solid #ccd0d4;
+  border-radius: 8px;
+  background: #fff;
+  padding: 12px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+}
+
+.viora-home-services-editor__section h4 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+}
+
+.viora-services-card h5 {
+  margin: 0 0 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.35px;
+  color: #50575e;
+}
+
+.viora-control {
+  margin-bottom: 10px;
+}
+
+.viora-control:last-child {
+  margin-bottom: 0;
+}
+
+.viora-field-label {
+  display: block;
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d2327;
+}
+
+.viora-home-services-editor .regular-text,
+.viora-home-services-editor .large-text,
+.viora-home-services-editor select {
+  width: 100%;
+  max-width: none;
+}
+
+.viora-services-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.viora-services-card {
+  border: 1px solid #d8dee6;
+  border-radius: 8px;
+  background: #fff;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.viora-services-card:hover {
+  border-color: #c3cedb;
+  box-shadow: 0 6px 16px rgba(16, 24, 40, 0.08);
+}
+
+.viora-services-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, #f8fafc 0%, #f4f7fb 100%);
+}
+
+.viora-toggle-service-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  text-decoration: none;
+  color: #1d2327;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.viora-toggle-service-card:focus {
+  box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.22);
+  outline: none;
+}
+
+.viora-toggle-service-card .viora-services-card__title {
+  display: block;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.35px;
+  color: #334155;
+  text-align: left;
+}
+
+.viora-services-card__chevron {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid #d4dce5;
+  background: #fff;
+  position: relative;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.viora-services-card__chevron::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid #5f6c7b;
+  border-bottom: 2px solid #5f6c7b;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.viora-services-card.is-collapsed .viora-services-card__chevron {
+  transform: rotate(-90deg);
+}
+
+.viora-services-card__body {
+  padding: 10px 12px 12px;
+  border-top: 1px solid #e6ebf1;
+  background: #fdfefe;
+}
+
+.viora-services-card__head .button-link-delete {
+  color: #9f1239;
+  text-decoration: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  border: 1px solid #f3c5d4;
+  border-radius: 999px;
+  padding: 3px 9px;
+  background: #fff0f5;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.viora-services-card__head .button-link-delete:hover {
+  background: #ffe4ee;
+  border-color: #eaa2bb;
+}
+
+.viora-services-card__head .button-link-delete[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.viora-services-actions {
+  margin-top: 12px;
+}
+
+.viora-feature-options {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.viora-features-control {
+  border: 1px solid #dbe3ec;
+  border-radius: 8px;
+  background: #fff;
+  padding: 0;
+  overflow: hidden;
+}
+
+.viora-toggle-features {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px !important;
+  text-decoration: none !important;
+  background: #f8fafc !important;
+  color: #1f2937 !important;
+  cursor: pointer !important;
+}
+
+.viora-toggle-features:focus {
+  box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.2);
+  outline: none;
+}
+
+.viora-features-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.25px;
+  text-transform: uppercase;
+}
+
+.viora-features-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.viora-features-count {
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1px solid #d3dce8;
+  background: #fff;
+  color: #475569;
+  font-size: 10px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viora-features-chevron {
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #64748b;
+  border-bottom: 2px solid #64748b;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.viora-features-control.is-open .viora-features-chevron {
+  transform: rotate(-135deg);
+}
+
+.viora-features-body {
+  padding: 8px 10px 10px;
+  border-top: 1px solid #e8edf3;
+  background: #fdfefe;
+}
+
+.viora-feature-option {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.viora-feature-option .regular-text {
+  margin: 0;
+}
+
+.viora-remove-feature-option {
+  color: #9f1239;
+  text-decoration: none;
+  border: 1px solid #f3c5d4;
+  border-radius: 999px;
+  padding: 3px 8px;
+  background: #fff0f5;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.viora-remove-feature-option:hover {
+  background: #ffe4ee;
+  border-color: #eaa2bb;
+}
+
+.viora-add-feature-option {
+  width: auto;
+}
+
+.viora-media-actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.viora-media-preview {
+  margin-top: 8px;
+  min-height: 78px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #c8ccd0;
+  border-radius: 6px;
+  background: #f6f7f7;
+  color: #666;
+}
+
+.viora-media-preview img {
+  max-width: 100%;
+  max-height: 130px;
+  object-fit: contain;
+}
+
+@media (min-width: 960px) {
+  .viora-services-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
