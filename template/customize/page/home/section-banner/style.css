@@ -1,0 +1,59 @@
+.viora-home-banner-editor {
+  display: grid;
+  gap: 12px;
+}
+
+.viora-home-banner-editor__help-toggle {
+  margin: 0;
+}
+
+.viora-home-banner-editor__help-toggle label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.viora-home-banner-editor__section {
+  border: 1px solid #dcdcde;
+  border-radius: 6px;
+  background: #fff;
+  padding: 10px;
+}
+
+.viora-home-banner-editor__section h4 {
+  margin: 0 0 10px;
+}
+
+.viora-home-banner-editor__section p {
+  margin: 0 0 8px;
+}
+
+.viora-media-field {
+  margin-bottom: 10px;
+}
+
+.viora-media-actions {
+  margin-top: 6px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.viora-media-preview {
+  margin-top: 8px;
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #dcdcde;
+  border-radius: 6px;
+  background: #f8f9fb;
+  color: #666;
+}
+
+.viora-media-preview img {
+  max-width: 100%;
+  max-height: 120px;
+  object-fit: contain;
+}

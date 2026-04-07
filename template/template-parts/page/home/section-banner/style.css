@@ -21,6 +21,65 @@
   padding-right: 1.375rem;
 }
 
+.viora-banner__customize-shortcut {
+  position: absolute;
+  right: 2rem;
+  top: 1.25rem;
+  z-index: 5;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.viora-banner__customize-button {
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.viora-banner__hover-outline {
+  position: absolute;
+  inset: 0;
+  border: 0.125rem dashed #2563eb;
+  border-radius: 0.75rem;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+  transition: opacity 0.2s ease;
+}
+
+.viora-banner:hover .viora-banner__hover-outline,
+.viora-banner:focus-within .viora-banner__hover-outline {
+  opacity: 1;
+}
+
+.viora-banner:hover .viora-banner__customize-shortcut,
+.viora-banner:focus-within .viora-banner__customize-shortcut {
+  opacity: 1;
+  visibility: visible;
+}
+
+.viora-banner .customize-partial-edit-shortcut {
+  position: absolute;
+  right: 2rem;
+  top: 1.25rem;
+  z-index: 5;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.viora-banner:hover .customize-partial-edit-shortcut,
+.viora-banner:focus-within .customize-partial-edit-shortcut {
+  opacity: 1;
+  visibility: visible;
+}
+
 .viora-banner * {
   font-family: "Inter", sans-serif;
 }
@@ -74,7 +133,11 @@
   letter-spacing: -0.04em;
 }
 
-.viora-banner__title span {
+.viora-banner__title-part {
+  display: inline;
+}
+
+.viora-banner__title-highlight {
   color: #4a3ffc;
 }
 
@@ -164,7 +227,8 @@
 .viora-banner__socials {
   margin-top: 1.5rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 1.25rem;
 }
 
@@ -345,6 +409,16 @@
   backdrop-filter: blur(1rem);
   -webkit-backdrop-filter: blur(1rem);
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.viora-banner__phone > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 1rem;
 }
 
 .viora-banner__phone-notch {
@@ -454,6 +528,17 @@
   .viora-banner {
     padding: 1.875rem 0 1.375rem;
   }
+
+  .viora-banner__customize-shortcut {
+    right: 0.625rem;
+    top: 0.625rem;
+  }
+
+  .viora-banner .customize-partial-edit-shortcut {
+    right: 0.625rem;
+    top: 0.625rem;
+  }
+
   .viora-banner__layout {
     grid-template-columns: 1fr;
     gap: 1.75rem;
@@ -547,13 +632,13 @@
   }
 
   .viora-banner__phone {
-    width: 6.375rem;
-    height: 10.375rem;
+    width: 10rem;
+    height: 18rem;
     right: -0.625rem;
     top: 2.75rem;
     border-width: 0.25rem;
-    border-radius: 1rem;
-    padding-top: 0.625rem;
+    border-radius: 1.5rem;
+    padding: 0.5rem;
   }
 
   .viora-banner__phone-notch {

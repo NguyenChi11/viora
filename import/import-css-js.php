@@ -44,6 +44,7 @@ function viora_enqueue_custom_assets()
     $is_home_context = (
         is_front_page()
         || is_page_template('home-page.php')
+        || is_customize_preview()
     );
 
     $is_aos_context = (
@@ -86,7 +87,7 @@ function viora_enqueue_custom_assets()
             'handle'    => 'viora-home-banner-style',
             'src'       => get_theme_file_uri('/template/template-parts/page/home/section-banner/style.css'),
             'deps'      => array('viora-global-style'),
-            'ver'       => $version,
+            'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-banner/style.css')),
             'in_footer' => false,
             'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-banner/style.css')),
         ),
@@ -94,8 +95,8 @@ function viora_enqueue_custom_assets()
             'type'      => 'script',
             'handle'    => 'viora-home-banner-script',
             'src'       => get_theme_file_uri('/template/template-parts/page/home/section-banner/script.js'),
-            'deps'      => array('viora-gsap'),
-            'ver'       => $version,
+            'deps'      => is_customize_preview() ? array('viora-gsap', 'customize-preview') : array('viora-gsap'),
+            'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-banner/script.js')),
             'in_footer' => true,
             'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-banner/script.js')),
         ),

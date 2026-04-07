@@ -118,3 +118,64 @@ function viora_import_copy_to_uploads($src_path)
     update_post_meta($attach_id, 'viora_source_file', $src_path);
     return (int)$attach_id;
 }
+
+function viora_maybe_import_home_banner_demo_once()
+{
+    if (get_option('viora_home_banner_demo_imported') === '1') {
+        return;
+    }
+
+    $home_id = function_exists('viora_home_banner_find_home_page_id')
+        ? viora_home_banner_find_home_page_id()
+        : (int) get_option('page_on_front');
+    if ($home_id <= 0) {
+        return;
+    }
+
+    $existing = get_post_meta($home_id, 'viora_home_banner_data', true);
+    if (is_array($existing) && !empty($existing)) {
+        update_option('viora_home_banner_demo_imported', '1');
+        return;
+    }
+
+    $file = get_theme_file_path('/import/data-demo/page/home/banner.php');
+    if (file_exists($file)) {
+        require_once $file;
+        if (function_exists('viora_import_home_banner_demo')) {
+            viora_import_home_banner_demo();
+        }
+    }
+
+    $after = get_post_meta($home_id, 'viora_home_banner_data', true);
+    if (is_array($after) && !empty($after)) {
+        update_option('viora_home_banner_demo_imported', '1');
+    }
+}
+
+function viora_admin_maybe_import_home_banner_demo_once()
+{
+    if (!is_admin()) {
+        return;
+    }
+
+    $screen = function_exists('get_current_screen') ? get_current_screen() : null;
+    if (!$screen || $screen->base !== 'post') {
+        return;
+    }
+
+    $post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
+    if ($post_id <= 0 || get_post_type($post_id) !== 'page') {
+        return;
+    }
+
+    $template = get_page_template_slug($post_id);
+    $front_id = (int) get_option('page_on_front');
+    if ($template !== 'home-page.php' && $post_id !== $front_id) {
+        return;
+    }
+
+    viora_maybe_import_home_banner_demo_once();
+}
+add_action('current_screen', 'viora_admin_maybe_import_home_banner_demo_once');
+
+add_action('after_switch_theme', 'viora_maybe_import_home_banner_demo_once', 20);
