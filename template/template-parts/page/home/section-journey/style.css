@@ -1,0 +1,766 @@
+.viora-journey {
+  --viora-journey-visual-height: 29rem;
+  position: relative;
+  overflow: visible;
+  padding: 5.25rem 0;
+  background:
+    radial-gradient(
+      circle at 75% 48%,
+      rgba(163, 144, 255, 0.22),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 25% -10%,
+      rgba(124, 155, 255, 0.2),
+      transparent 42%
+    ),
+    linear-gradient(160deg, #291dd3 0%, #371fec 48%, #3f28ee 100%);
+}
+
+.viora-journey__hover-outline {
+  position: absolute;
+  inset: 0;
+  border: 0.125rem dashed #2563eb;
+  border-radius: 0.75rem;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+  transition: opacity 0.2s ease;
+}
+
+.viora-journey:hover .viora-journey__hover-outline,
+.viora-journey:focus-within .viora-journey__hover-outline {
+  opacity: 1;
+}
+
+.viora-journey .customize-partial-edit-shortcut {
+  position: absolute;
+  right: 2rem;
+  top: 1.25rem;
+  z-index: 5;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.viora-journey:hover .customize-partial-edit-shortcut,
+.viora-journey:focus-within .customize-partial-edit-shortcut {
+  opacity: 1;
+  visibility: visible;
+}
+
+.viora-journey * {
+  font-family: "Inter", sans-serif;
+}
+
+.viora-journey__container {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
+.viora-journey__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.viora-journey__title {
+  margin: 0;
+  color: #ffffff;
+  font-size: clamp(2.25rem, 3.6vw, 3.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+}
+
+.viora-journey__cta {
+  min-height: 3.125rem;
+  min-width: 12.25rem;
+  border-radius: 0.8rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.7);
+  color: #ffffff;
+  padding: 0.65rem 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(0.35rem);
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.viora-journey__cta:hover,
+.viora-journey__cta:focus-visible {
+  transform: translateY(-0.125rem);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #ffffff;
+}
+
+.viora-journey__layout {
+  margin-top: 2.125rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.viora-journey__timeline {
+  position: relative;
+  padding-left: 4.6rem;
+}
+
+.viora-journey__line,
+.viora-journey__progress {
+  position: absolute;
+  left: 2rem;
+  width: 0.125rem;
+  border-radius: 2rem;
+}
+
+.viora-journey__line {
+  top: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.viora-journey__progress {
+  top: 0;
+  height: 0;
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    rgba(255, 255, 255, 0.65) 100%
+  );
+  box-shadow: 0 0 1rem rgba(255, 255, 255, 0.45);
+}
+
+.viora-journey__indicator {
+  position: absolute;
+  left: 2rem;
+  top: 0;
+  width: 0.95rem;
+  height: 0.95rem;
+  border-radius: 50%;
+  border: 0.125rem solid rgba(48, 29, 221, 0.95);
+  background: #ffffff;
+  box-shadow:
+    0 0 0 0.2rem rgba(255, 255, 255, 0.22),
+    0 0.2rem 0.75rem rgba(255, 255, 255, 0.5);
+  z-index: 2;
+  transform: translate(-50%, 0);
+}
+
+.viora-journey__item {
+  display: grid;
+  grid-template-columns: 3.7rem minmax(0, 1fr);
+  align-items: center;
+  gap: 1.125rem;
+  height: var(--viora-journey-visual-height, 29rem);
+  min-height: var(--viora-journey-visual-height, 29rem);
+  margin-bottom: 1.75rem;
+  opacity: 0.58;
+  transition: opacity 0.35s ease;
+}
+
+.viora-journey__item:last-child {
+  margin-bottom: 0;
+}
+
+.viora-journey__item.is-active {
+  opacity: 1;
+}
+
+.viora-journey__content {
+  padding: 1.1rem 1.2rem 1.2rem;
+  border-radius: 1rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(0.2rem);
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.viora-journey__item.is-active .viora-journey__content {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1rem 2rem rgba(17, 9, 83, 0.25);
+}
+
+.viora-journey__pin {
+  position: relative;
+  border-radius: 0.85rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.06)
+  );
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0.9375rem rgba(255, 255, 255, 0.08);
+  padding: 0.5rem;
+  transition:
+    transform 0.28s ease,
+    background-color 0.28s ease,
+    border-color 0.28s ease;
+}
+
+.viora-journey__item.is-active .viora-journey__pin {
+  transform: translateY(-0.25rem) scale(1.05);
+  border-color: rgba(255, 255, 255, 0.34);
+  background: linear-gradient(
+    150deg,
+    rgba(255, 255, 255, 0.24),
+    rgba(255, 255, 255, 0.12)
+  );
+}
+
+.viora-journey__pin-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  width: 3rem;
+  height: 3rem;
+}
+
+.viora-journey__pin-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.viora-journey__pin-icon img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.viora-journey__point {
+  position: absolute;
+  left: -2.58rem;
+  top: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.viora-journey__year {
+  margin: 0;
+  color: rgba(210, 206, 255, 0.95);
+  font-size: 0.9rem;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  font-weight: 650;
+}
+
+.viora-journey__item-title {
+  margin: 0.7rem 0 0;
+  color: #ffffff;
+  font-size: clamp(1.55rem, 1.95vw, 2rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.viora-journey__description {
+  margin: 0.8rem 0 0;
+  max-width: 33rem;
+  color: rgba(229, 230, 255, 0.88);
+  font-size: 1.08rem;
+  line-height: 1.62;
+  font-weight: 450;
+}
+
+.viora-journey__visual {
+  --viora-journey-rocket-size: 7.2rem;
+  --viora-journey-alarm-size: 10.6rem;
+  position: sticky;
+  top: 5.25rem;
+  align-self: start;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: var(--viora-journey-visual-height, 29rem);
+  min-height: var(--viora-journey-visual-height, 29rem);
+}
+
+.viora-journey__orbital {
+  position: relative;
+  width: min(31rem, 100%);
+  aspect-ratio: 1 / 1;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.95);
+  background:
+    radial-gradient(
+      circle at 30% 24%,
+      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.03) 56%
+    ),
+    radial-gradient(
+      circle at 75% 72%,
+      rgba(126, 104, 255, 0.34),
+      rgba(126, 104, 255, 0) 64%
+    );
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 4rem rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.viora-journey__orb {
+  position: absolute;
+  border-radius: 50%;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.22);
+  background: radial-gradient(
+    circle at 35% 20%,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.03) 58%
+  );
+  transform-origin: 50% 50%;
+}
+
+.viora-journey__orb--outer {
+  inset: 0;
+  animation: vioraJourneyOuterWave 3.8s infinite ease-out;
+}
+
+.viora-journey__orb--inner {
+  inset: 16%;
+  animation: vioraJourneyOuterWave 3.8s infinite ease-out;
+  animation-delay: 1.2s;
+}
+
+.viora-journey__orbital::before,
+.viora-journey__orbital::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.viora-journey__orbital::before {
+  inset: 14%;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 1.1rem rgba(199, 191, 255, 0.2);
+  animation: vioraJourneyOuterWaveSoft 4.6s infinite ease-out;
+}
+
+.viora-journey__orbital::after {
+  inset: 28%;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 0.9rem rgba(188, 176, 255, 0.15);
+  animation: vioraJourneyOuterWaveSoft 4.6s infinite ease-out;
+  animation-delay: 1.5s;
+}
+
+.viora-journey__rocket {
+  width: var(--viora-journey-rocket-size);
+  height: var(--viora-journey-rocket-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1.2rem;
+  background: radial-gradient(
+    circle at 30% 20%,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.06) 68%
+  );
+  border: 0.075rem solid rgba(255, 255, 255, 0.36);
+  filter: drop-shadow(0 0.45rem 1rem rgba(160, 140, 255, 0.34));
+  overflow: visible;
+  z-index: 3;
+  box-shadow:
+    0 0 0 rgba(140, 120, 255, 0),
+    0 0 2.2rem rgba(119, 99, 255, 0.24);
+  animation: vioraJourneyAlarmGlow 1.8s infinite ease-in-out;
+}
+
+.viora-journey__rocket svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.viora-journey__rocket img {
+  width: 78%;
+  height: 78%;
+  display: block;
+  object-fit: contain;
+}
+
+.viora-journey__rocket-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+.viora-journey__alarm-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--viora-journey-alarm-size);
+  height: var(--viora-journey-alarm-size);
+  border-radius: 50%;
+  border: 0.085rem solid rgba(200, 188, 255, 0.58);
+  transform: translate(-50%, -50%) scale(0.74);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+  box-shadow:
+    0 0 1.4rem rgba(146, 124, 255, 0.22),
+    inset 0 0 0.8rem rgba(210, 198, 255, 0.14);
+}
+
+.viora-journey__alarm-ring::before {
+  content: "";
+  position: absolute;
+  inset: -0.4rem;
+  border-radius: 50%;
+  border: 0.045rem solid rgba(185, 169, 255, 0.26);
+  filter: blur(0.1rem);
+}
+
+.viora-journey__alarm-ring--one {
+  animation: vioraJourneyAlarmRing 2s infinite cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.viora-journey__alarm-ring--two {
+  animation: vioraJourneyAlarmRing 2s infinite cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation-delay: 1s;
+}
+
+.viora-journey__alarm-flash {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - (var(--viora-journey-rocket-size) / 2) - 0.55rem);
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 999rem;
+  transform: translate(-50%, -50%);
+  background: rgba(220, 214, 255, 0.85);
+  border: 0.045rem solid rgba(255, 255, 255, 0.65);
+  box-shadow:
+    0 0 0 rgba(167, 147, 255, 0),
+    0 0 0 rgba(204, 194, 255, 0);
+  z-index: 4;
+  animation: vioraJourneyAlarmFlash 1.2s infinite cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes vioraJourneyAlarmRing {
+  0% {
+    transform: translate(-50%, -50%) scale(0.74);
+    opacity: 0;
+  }
+
+  18% {
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1.28);
+    opacity: 0;
+  }
+}
+
+@keyframes vioraJourneyAlarmFlash {
+  0%,
+  30%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.72);
+    background: rgba(210, 202, 255, 0.45);
+    box-shadow:
+      0 0 0 rgba(165, 145, 255, 0),
+      0 0 0 rgba(204, 194, 255, 0);
+  }
+
+  10%,
+  17% {
+    transform: translate(-50%, -50%) scale(1);
+    background: rgba(221, 214, 255, 0.98);
+    box-shadow:
+      0 0 1rem rgba(177, 153, 255, 0.74),
+      0 0 1.8rem rgba(199, 184, 255, 0.55);
+  }
+}
+
+@keyframes vioraJourneyAlarmGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 rgba(140, 120, 255, 0),
+      0 0 2rem rgba(102, 82, 255, 0.2);
+  }
+
+  50% {
+    box-shadow:
+      0 0 1rem rgba(178, 154, 255, 0.4),
+      0 0 2.2rem rgba(133, 109, 255, 0.34);
+  }
+}
+
+@keyframes vioraJourneyOuterWave {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.22;
+  }
+
+  45% {
+    opacity: 0.48;
+  }
+
+  100% {
+    transform: scale(1.08);
+    opacity: 0.12;
+  }
+}
+
+@keyframes vioraJourneyOuterWaveSoft {
+  0% {
+    transform: scale(0.94);
+    opacity: 0.16;
+  }
+
+  50% {
+    opacity: 0.34;
+  }
+
+  100% {
+    transform: scale(1.1);
+    opacity: 0.08;
+  }
+}
+
+.viora-journey__visual-info {
+  position: absolute;
+  left: 50%;
+  bottom: 0.85rem;
+  width: min(24rem, calc(100% - 2.4rem));
+  transform: translateX(-50%);
+  border-radius: 0.95rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.08)
+  );
+  backdrop-filter: blur(0.55rem);
+  padding: 0.85rem 1rem 0.9rem;
+  box-shadow: 0 1rem 2rem rgba(15, 8, 66, 0.25);
+}
+
+.viora-journey__visual-year {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.8rem;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  font-weight: 650;
+}
+
+.viora-journey__visual-title {
+  margin: 0.5rem 0 0;
+  color: #ffffff;
+  font-size: 1.25rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+}
+
+.viora-journey__visual-description {
+  margin: 0.45rem 0 0;
+  color: rgba(240, 239, 255, 0.86);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 1023.98px) {
+  .viora-journey {
+    --viora-journey-visual-height: 20rem;
+    padding-top: 4.25rem;
+    padding-bottom: 4.25rem;
+  }
+
+  .viora-journey__container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .viora-journey__header {
+    flex-wrap: wrap;
+  }
+
+  .viora-journey__layout {
+    margin-top: 1.75rem;
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+  }
+
+  .viora-journey__visual {
+    --viora-journey-rocket-size: 5.2rem;
+    --viora-journey-alarm-size: 7.3rem;
+    order: -1;
+    top: 1rem;
+    display: none;
+  }
+
+  .viora-journey__orbital {
+    width: min(25rem, 100%);
+  }
+
+  .viora-journey__timeline {
+    padding-left: 4rem;
+  }
+
+  .viora-journey__line,
+  .viora-journey__progress,
+  .viora-journey__indicator {
+    left: 1.7rem;
+  }
+
+  .viora-journey__point {
+    left: -2.34rem;
+  }
+}
+
+@media (max-width: 639.98px) {
+  .viora-journey {
+    --viora-journey-visual-height: 14rem;
+    padding-top: 3.25rem;
+    padding-bottom: 3.25rem;
+  }
+
+  .viora-journey__container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .viora-journey__title {
+    font-size: 2rem;
+  }
+
+  .viora-journey__cta {
+    min-width: 0;
+    width: 100%;
+    min-height: 2.9rem;
+    font-size: 0.95rem;
+  }
+
+  .viora-journey__layout {
+    gap: 1.4rem;
+  }
+
+  .viora-journey__visual {
+    --viora-journey-rocket-size: 4.1rem;
+    --viora-journey-alarm-size: 5.6rem;
+    top: 0.75rem;
+  }
+
+  .viora-journey__orbital {
+    width: min(19.5rem, 100%);
+  }
+
+  .viora-journey__rocket {
+    width: var(--viora-journey-rocket-size);
+    height: var(--viora-journey-rocket-size);
+  }
+
+  .viora-journey__alarm-ring {
+    width: var(--viora-journey-alarm-size);
+    height: var(--viora-journey-alarm-size);
+  }
+
+  .viora-journey__alarm-flash {
+    width: 0.45rem;
+    height: 0.45rem;
+  }
+
+  .viora-journey__visual-info {
+    width: calc(100% - 1.5rem);
+    bottom: 0.5rem;
+    padding: 0.7rem 0.8rem 0.75rem;
+  }
+
+  .viora-journey__visual-title {
+    font-size: 1.05rem;
+  }
+
+  .viora-journey__visual-description {
+    font-size: 0.82rem;
+  }
+
+  .viora-journey__timeline {
+    padding-left: 0;
+  }
+
+  .viora-journey__line,
+  .viora-journey__progress,
+  .viora-journey__indicator {
+    left: 0.5rem;
+  }
+
+  .viora-journey__item {
+    grid-template-columns: 3.1rem minmax(0, 1fr);
+    gap: 0.85rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .viora-journey__pin {
+    width: 3.1rem;
+    height: 3.1rem;
+  }
+
+  .viora-journey__point {
+    left: -1.68rem;
+  }
+
+  .viora-journey__year {
+    font-size: 0.82rem;
+  }
+
+  .viora-journey__item-title {
+    margin-top: 0.55rem;
+    font-size: 1.42rem;
+  }
+
+  .viora-journey__description {
+    margin-top: 0.62rem;
+    font-size: 0.96rem;
+    line-height: 1.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .viora-journey__rocket,
+  .viora-journey__alarm-ring,
+  .viora-journey__orb--outer,
+  .viora-journey__orb--inner,
+  .viora-journey__alarm-flash {
+    animation: none !important;
+  }
+
+  .viora-journey__orbital::before,
+  .viora-journey__orbital::after {
+    animation: none !important;
+  }
+}

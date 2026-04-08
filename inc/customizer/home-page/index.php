@@ -77,6 +77,17 @@ if (!function_exists('viora_home_get_inline_i18n_data')) {
                 'items.4.description' => __('Service card 5 description.', 'viora'),
                 'items.4.features' => __('Comma-separated features for card 5.', 'viora'),
                 'portfolio.title' => __('Main heading for the portfolio section.', 'viora'),
+                'header.title' => __('Main heading for the journey section.', 'viora'),
+                'header.cta.text' => __('CTA label shown in the journey header.', 'viora'),
+                'header.cta.url' => __('CTA URL for the journey header.', 'viora'),
+                'layout.timeline.items.0.year' => __('Timeline item 1 year.', 'viora'),
+                'layout.timeline.items.0.title' => __('Timeline item 1 title.', 'viora'),
+                'layout.timeline.items.0.description' => __('Timeline item 1 description.', 'viora'),
+                'layout.timeline.items.0.icon_url' => __('Timeline item 1 icon URL.', 'viora'),
+                'layout.visual.rocketIcon_url' => __('Rocket icon URL in journey visual area.', 'viora'),
+                'layout.visual.rings.first' => __('Toggle first alarm ring in journey visual.', 'viora'),
+                'layout.visual.rings.second' => __('Toggle second alarm ring in journey visual.', 'viora'),
+                'layout.visual.flash' => __('Toggle flash effect in journey visual.', 'viora'),
             ),
         );
     }
@@ -96,5 +107,6 @@ if (!function_exists('viora_home_add_inline_i18n')) {
 }
 
 require get_template_directory() . '/inc/customizer/home-page/section-banner/index.php';
-require get_template_directory() . '/inc/customizer/home-page/section-serviecs/index.php';
+require get_template_directory() . '/inc/customizer/home-page/section-services/index.php';
+require get_template_directory() . '/inc/customizer/home-page/section-journey/index.php';
 require get_template_directory() . '/inc/customizer/home-page/section-portfolio/index.php';

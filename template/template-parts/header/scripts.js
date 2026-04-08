@@ -4,20 +4,51 @@ document.addEventListener("DOMContentLoaded", function () {
   var sidebar = document.getElementById("mobile-sidebar");
   var backdrop = document.querySelector(".mobile-sidebar-backdrop");
   var closeBtn = document.querySelector(".mobile-sidebar-close");
+  var lastScrollY = Math.max(0, window.scrollY || 0);
+  var scrollThreshold = 72;
+  var directionDelta = 4;
 
   function onScroll() {
     if (!header) return;
-    if (window.scrollY > 2) {
+
+    var currentScrollY = Math.max(0, window.scrollY || 0);
+    var delta = currentScrollY - lastScrollY;
+    var sidebarOpen = !!(sidebar && sidebar.classList.contains("open"));
+
+    if (currentScrollY > 2) {
       header.classList.add("is-scrolled");
     } else {
       header.classList.remove("is-scrolled");
     }
+
+    if (sidebarOpen) {
+      header.classList.remove("is-hidden");
+      lastScrollY = currentScrollY;
+      return;
+    }
+
+    if (currentScrollY <= 2) {
+      header.classList.remove("is-hidden");
+      lastScrollY = currentScrollY;
+      return;
+    }
+
+    if (delta > directionDelta && currentScrollY > scrollThreshold) {
+      header.classList.add("is-hidden");
+    } else if (delta < -directionDelta) {
+      header.classList.remove("is-hidden");
+    }
+
+    lastScrollY = currentScrollY;
   }
 
   function openSidebar() {
     if (!sidebar) return;
     sidebar.classList.add("open");
     sidebar.setAttribute("aria-hidden", "false");
+    if (header) {
+      header.classList.remove("is-hidden");
+    }
     if (backdrop) {
       backdrop.classList.add("visible");
     }
@@ -40,6 +71,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (toggleBtn) {
       toggleBtn.setAttribute("aria-expanded", "false");
     }
+
+    onScroll();
   }
 
   window.addEventListener("scroll", onScroll, { passive: true });

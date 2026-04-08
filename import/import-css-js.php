@@ -34,6 +34,7 @@ function viora_enqueue_lib()
     wp_enqueue_script('viora-swiper', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), THEME_VERSION, true);
 
     wp_enqueue_script('viora-gsap', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js', array(), '3.12.5', true);
+    wp_enqueue_script('viora-gsap-scrolltrigger', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js', array('viora-gsap'), '3.12.5', true);
 }
 add_action('wp_enqueue_scripts', 'viora_enqueue_lib', 1000);
 
@@ -113,12 +114,21 @@ function viora_enqueue_custom_assets()
         ),
         array(
             'type'      => 'style',
-            'handle'    => 'viora-home-portfolio-style',
-            'src'       => get_theme_file_uri('/template/template-parts/page/home/section-potfolio/style.css'),
+            'handle'    => 'viora-home-journey-style',
+            'src'       => get_theme_file_uri('/template/template-parts/page/home/section-journey/style.css'),
             'deps'      => array('viora-global-style'),
-            'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-potfolio/style.css')),
+            'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-journey/style.css')),
             'in_footer' => false,
-            'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-potfolio/style.css')),
+            'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-journey/style.css')),
+        ),
+        array(
+            'type'      => 'style',
+            'handle'    => 'viora-home-portfolio-style',
+            'src'       => get_theme_file_uri('/template/template-parts/page/home/section-portfolio/style.css'),
+            'deps'      => array('viora-global-style'),
+            'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-portfolio/style.css')),
+            'in_footer' => false,
+            'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-portfolio/style.css')),
         ),
         array(
             'type'      => 'style',
@@ -140,12 +150,21 @@ function viora_enqueue_custom_assets()
         ),
         array(
             'type'      => 'script',
-            'handle'    => 'viora-home-portfolio-script',
-            'src'       => get_theme_file_uri('/template/template-parts/page/home/section-potfolio/script.js'),
-            'deps'      => array('viora-gsap', 'viora-swiper'),
-            'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-potfolio/script.js')),
+            'handle'    => 'viora-home-journey-script',
+            'src'       => get_theme_file_uri('/template/template-parts/page/home/section-journey/script.js'),
+            'deps'      => array('viora-gsap', 'viora-gsap-scrolltrigger'),
+            'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-journey/script.js')),
             'in_footer' => true,
-            'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-potfolio/script.js')),
+            'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-journey/script.js')),
+        ),
+        array(
+            'type'      => 'script',
+            'handle'    => 'viora-home-portfolio-script',
+            'src'       => get_theme_file_uri('/template/template-parts/page/home/section-portfolio/script.js'),
+            'deps'      => array('viora-gsap', 'viora-swiper'),
+            'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-portfolio/script.js')),
+            'in_footer' => true,
+            'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-portfolio/script.js')),
         ),
         array(
             'type'      => 'style',

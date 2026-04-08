@@ -90,7 +90,7 @@ if (!function_exists('viora_home_portfolio_customize_register')) {
                 'fallback_refresh' => false,
                 'render_callback' => function () {
                     ob_start();
-                    get_template_part('template/template-parts/page/home/section-potfolio/index');
+                    get_template_part('template/template-parts/page/home/section-portfolio/index');
                     return ob_get_clean();
                 },
             ));
