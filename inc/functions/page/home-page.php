@@ -778,3 +778,282 @@ if (!function_exists('viora_home_services_get_data_for_front')) {
         );
     }
 }
+
+if (!function_exists('viora_home_portfolio_normalize_input')) {
+    function viora_home_portfolio_normalize_input($value)
+    {
+        if (is_string($value)) {
+            $decoded = json_decode(wp_unslash($value), true);
+            if (is_array($decoded)) {
+                $value = $decoded;
+            }
+        }
+
+        if (is_object($value)) {
+            $decoded_object = json_decode(wp_json_encode($value), true);
+            $value = is_array($decoded_object) ? $decoded_object : array();
+        }
+
+        if (is_array($value)) {
+            foreach ($value as $key => $item) {
+                $value[$key] = viora_home_portfolio_normalize_input($item);
+            }
+        }
+
+        return $value;
+    }
+}
+
+if (!function_exists('viora_home_portfolio_sanitize_data')) {
+    function viora_home_portfolio_sanitize_data($value)
+    {
+        if (function_exists('viora_home_portfolio_normalize_input')) {
+            $value = viora_home_portfolio_normalize_input($value);
+        }
+
+        if (!is_array($value)) {
+            $value = array();
+        }
+
+        return array(
+            'enabled' => isset($value['enabled']) ? (bool) $value['enabled'] : true,
+            'title' => sanitize_text_field(isset($value['title']) ? $value['title'] : __('Our Portfolio', 'viora')),
+        );
+    }
+}
+
+if (!function_exists('viora_home_portfolio_deep_merge')) {
+    function viora_home_portfolio_deep_merge($base, $patch)
+    {
+        $base = is_array($base) ? $base : array();
+        $patch = is_array($patch) ? $patch : array();
+
+        foreach ($patch as $key => $patch_value) {
+            if (is_array($patch_value)) {
+                $base_value = isset($base[$key]) && is_array($base[$key]) ? $base[$key] : array();
+                $base[$key] = viora_home_portfolio_deep_merge($base_value, $patch_value);
+                continue;
+            }
+
+            $base[$key] = $patch_value;
+        }
+
+        return $base;
+    }
+}
+
+if (!function_exists('viora_home_portfolio_merge_with_current')) {
+    function viora_home_portfolio_merge_with_current($incoming, $page_id = 0)
+    {
+        if (function_exists('viora_home_portfolio_normalize_input')) {
+            $incoming = viora_home_portfolio_normalize_input($incoming);
+        }
+
+        $incoming = is_array($incoming) ? $incoming : array();
+
+        $current = get_theme_mod('viora_home_portfolio_data', array());
+        if (function_exists('viora_home_portfolio_normalize_input')) {
+            $current = viora_home_portfolio_normalize_input($current);
+        }
+
+        if (!is_array($current) || empty($current)) {
+            $state = function_exists('viora_home_portfolio_get_data_for_front')
+                ? viora_home_portfolio_get_data_for_front($page_id)
+                : array('data' => array());
+            $current = isset($state['data']) && is_array($state['data']) ? $state['data'] : array();
+        }
+
+        if (!is_array($current)) {
+            $current = array();
+        }
+
+        return viora_home_portfolio_deep_merge($current, $incoming);
+    }
+}
+
+if (!function_exists('viora_home_portfolio_get_default_data')) {
+    function viora_home_portfolio_get_default_data()
+    {
+        return viora_home_portfolio_sanitize_data(array());
+    }
+}
+
+if (!function_exists('viora_home_portfolio_is_home_page_id')) {
+    function viora_home_portfolio_is_home_page_id($post_id)
+    {
+        if (function_exists('viora_home_banner_is_home_page_id')) {
+            return viora_home_banner_is_home_page_id($post_id);
+        }
+
+        $post_id = absint($post_id);
+        if ($post_id <= 0) {
+            return false;
+        }
+
+        $template = get_page_template_slug($post_id);
+        $front_id = (int) get_option('page_on_front');
+        return ($template === 'home-page.php' || $front_id === $post_id);
+    }
+}
+
+if (!function_exists('viora_home_portfolio_find_home_page_id')) {
+    function viora_home_portfolio_find_home_page_id()
+    {
+        if (function_exists('viora_home_banner_find_home_page_id')) {
+            return viora_home_banner_find_home_page_id();
+        }
+
+        $front_id = (int) get_option('page_on_front');
+        if ($front_id > 0 && viora_home_portfolio_is_home_page_id($front_id)) {
+            return $front_id;
+        }
+
+        if (function_exists('viora_find_page_by_templates_or_slugs')) {
+            return viora_find_page_by_templates_or_slugs(
+                array('home-page.php'),
+                array('home', 'trang-chu', 'homepage')
+            );
+        }
+
+        return 0;
+    }
+}
+
+if (!function_exists('viora_home_portfolio_collect_target_page_ids')) {
+    function viora_home_portfolio_collect_target_page_ids($preferred_page_id = 0)
+    {
+        if (function_exists('viora_home_banner_collect_target_page_ids')) {
+            return viora_home_banner_collect_target_page_ids($preferred_page_id);
+        }
+
+        $targets = array();
+        $preferred_page_id = absint($preferred_page_id);
+        if ($preferred_page_id > 0 && viora_home_portfolio_is_home_page_id($preferred_page_id)) {
+            $targets[] = $preferred_page_id;
+        }
+
+        $front_id = (int) get_option('page_on_front');
+        if ($front_id > 0 && viora_home_portfolio_is_home_page_id($front_id)) {
+            $targets[] = $front_id;
+        }
+
+        $home_pages = get_pages(array(
+            'meta_key' => '_wp_page_template',
+            'meta_value' => 'home-page.php',
+            'number' => -1,
+            'fields' => 'ids',
+        ));
+        if (is_array($home_pages)) {
+            foreach ($home_pages as $page_id) {
+                $targets[] = absint($page_id);
+            }
+        }
+
+        $targets = array_unique(array_filter(array_map('absint', $targets)));
+        if (empty($targets)) {
+            $fallback_id = viora_home_portfolio_find_home_page_id();
+            if ($fallback_id > 0) {
+                $targets[] = $fallback_id;
+            }
+        }
+
+        return array_unique(array_filter(array_map('absint', $targets)));
+    }
+}
+
+if (!function_exists('viora_home_portfolio_sync_storage')) {
+    function viora_home_portfolio_sync_storage($enabled, $data, $preferred_page_id = 0)
+    {
+        $enabled = absint($enabled) === 1 ? 1 : 0;
+        $data = viora_home_portfolio_sanitize_data($data);
+        $data['enabled'] = ($enabled === 1);
+
+        $targets = viora_home_portfolio_collect_target_page_ids($preferred_page_id);
+        $preferred_page_id = absint($preferred_page_id);
+        if (empty($targets) && $preferred_page_id > 0) {
+            $targets[] = $preferred_page_id;
+        }
+
+        foreach ($targets as $target_id) {
+            update_post_meta($target_id, 'viora_home_portfolio_data', $data);
+            update_post_meta($target_id, 'viora_home_portfolio_enabled', $enabled);
+            clean_post_cache($target_id);
+        }
+
+        set_theme_mod('viora_home_portfolio_data', $data);
+        set_theme_mod('viora_home_portfolio_enabled', $enabled);
+
+        return $targets;
+    }
+}
+
+if (!function_exists('viora_home_portfolio_get_data_for_front')) {
+    function viora_home_portfolio_get_data_for_front($page_id = 0)
+    {
+        $page_id = absint($page_id);
+        if ($page_id <= 0) {
+            $queried_id = get_queried_object_id();
+            if ($queried_id > 0) {
+                $page_id = (int) $queried_id;
+            }
+        }
+        if ($page_id <= 0) {
+            $page_id = viora_home_portfolio_find_home_page_id();
+        }
+
+        $data = array();
+        $enabled = null;
+        if ($page_id > 0) {
+            $meta_data = get_post_meta($page_id, 'viora_home_portfolio_data', true);
+            if (is_array($meta_data)) {
+                $data = $meta_data;
+            }
+
+            $meta_enabled = get_post_meta($page_id, 'viora_home_portfolio_enabled', true);
+            if ($meta_enabled !== '') {
+                $enabled = absint($meta_enabled);
+            }
+        }
+
+        if (!is_array($data) || empty($data)) {
+            $mod_data = get_theme_mod('viora_home_portfolio_data', array());
+            if (function_exists('viora_home_portfolio_normalize_input')) {
+                $mod_data = viora_home_portfolio_normalize_input($mod_data);
+            }
+            if (is_array($mod_data) && !empty($mod_data)) {
+                $data = $mod_data;
+            }
+        }
+
+        if ((!is_array($data) || empty($data)) && function_exists('viora_import_parse_js')) {
+            $demo_data = viora_import_parse_js('/assets/data/page/home/portfolio.js', 'vioraHomePortfolioData');
+            if (is_array($demo_data) && !empty($demo_data)) {
+                $data = $demo_data;
+            }
+        }
+
+        if ($enabled === null) {
+            $enabled = absint(get_theme_mod('viora_home_portfolio_enabled', isset($data['enabled']) ? (int) $data['enabled'] : 1));
+        }
+
+        if (is_customize_preview()) {
+            $preview_data = get_theme_mod('viora_home_portfolio_data', array());
+            if (function_exists('viora_home_portfolio_normalize_input')) {
+                $preview_data = viora_home_portfolio_normalize_input($preview_data);
+            }
+            if (is_array($preview_data) && !empty($preview_data)) {
+                $data = $preview_data;
+            }
+            $enabled = absint(get_theme_mod('viora_home_portfolio_enabled', $enabled));
+        }
+
+        $data = viora_home_portfolio_sanitize_data($data);
+        $data['enabled'] = ($enabled === 1);
+
+        return array(
+            'page_id' => $page_id,
+            'enabled' => $enabled,
+            'data' => $data,
+        );
+    }
+}

@@ -26,6 +26,7 @@ if (!function_exists('viora_home_get_inline_i18n_data')) {
             'scrollHint' => __('Scroll hint', 'viora'),
             'servicesEyebrow' => __('Services eyebrow', 'viora'),
             'servicesTitle' => __('Services title', 'viora'),
+            'portfolioTitle' => __('Portfolio title', 'viora'),
             'serviceIconImage' => __('Service icon image', 'viora'),
             'serviceCardTitle' => __('Service title', 'viora'),
             'serviceDescription' => __('Service description', 'viora'),
@@ -75,6 +76,7 @@ if (!function_exists('viora_home_get_inline_i18n_data')) {
                 'items.4.title' => __('Service card 5 title.', 'viora'),
                 'items.4.description' => __('Service card 5 description.', 'viora'),
                 'items.4.features' => __('Comma-separated features for card 5.', 'viora'),
+                'portfolio.title' => __('Main heading for the portfolio section.', 'viora'),
             ),
         );
     }
@@ -95,3 +97,4 @@ if (!function_exists('viora_home_add_inline_i18n')) {
 
 require get_template_directory() . '/inc/customizer/home-page/section-banner/index.php';
 require get_template_directory() . '/inc/customizer/home-page/section-serviecs/index.php';
+require get_template_directory() . '/inc/customizer/home-page/section-portfolio/index.php';

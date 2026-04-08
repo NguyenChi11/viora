@@ -2,6 +2,7 @@
 
 require get_template_directory() . '/inc/meta-box/page/home/section-banner/index.php';
 require get_template_directory() . '/inc/meta-box/page/home/section-services/index.php';
+require get_template_directory() . '/inc/meta-box/page/home/section-portfolio/index.php';
 
 if (!function_exists('viora_home_group_meta_box_add')) {
     function viora_home_group_meta_box_add($post_type, $post)
@@ -68,6 +69,7 @@ if (!function_exists('viora_home_group_meta_box_render')) {
         echo '<div class="viora-home-admin-tabs" role="tablist" aria-label="' . esc_attr__('Home sections', 'viora') . '">';
         echo '<button type="button" class="button viora-home-admin-tab is-active" data-target="viora-home-panel-banner" role="tab" aria-selected="true">' . esc_html__('Banner', 'viora') . '</button>';
         echo '<button type="button" class="button viora-home-admin-tab" data-target="viora-home-panel-services" role="tab" aria-selected="false">' . esc_html__('Services', 'viora') . '</button>';
+        echo '<button type="button" class="button viora-home-admin-tab" data-target="viora-home-panel-portfolio" role="tab" aria-selected="false">' . esc_html__('Portfolio', 'viora') . '</button>';
         echo '</div>';
 
         echo '<div class="viora-home-admin-panels">';
@@ -82,6 +84,13 @@ if (!function_exists('viora_home_group_meta_box_render')) {
 
         if (function_exists('viora_home_services_meta_box_content')) {
             viora_home_services_meta_box_content($post);
+        }
+
+        echo '</div>';
+        echo '<div id="viora-home-panel-portfolio" class="viora-home-admin-panel" role="tabpanel" hidden>';
+
+        if (function_exists('viora_home_portfolio_meta_box_content')) {
+            viora_home_portfolio_meta_box_content($post);
         }
 
         echo '</div>';

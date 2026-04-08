@@ -47,6 +47,8 @@ function viora_enqueue_custom_assets()
         || is_customize_preview()
     );
 
+    $is_portfolio_single = is_singular('portfolio');
+
     $is_aos_context = (
         is_front_page()
         || is_page_template('home-page.php')
@@ -110,6 +112,24 @@ function viora_enqueue_custom_assets()
             'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-service/style.css')),
         ),
         array(
+            'type'      => 'style',
+            'handle'    => 'viora-home-portfolio-style',
+            'src'       => get_theme_file_uri('/template/template-parts/page/home/section-potfolio/style.css'),
+            'deps'      => array('viora-global-style'),
+            'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-potfolio/style.css')),
+            'in_footer' => false,
+            'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-potfolio/style.css')),
+        ),
+        array(
+            'type'      => 'style',
+            'handle'    => 'viora-portfolio-single-style',
+            'src'       => get_theme_file_uri('/template/template-parts/single/portfolio/style.css'),
+            'deps'      => array('viora-global-style'),
+            'ver'       => filemtime(get_theme_file_path('/template/template-parts/single/portfolio/style.css')),
+            'in_footer' => false,
+            'condition' => $is_portfolio_single && file_exists(get_theme_file_path('/template/template-parts/single/portfolio/style.css')),
+        ),
+        array(
             'type'      => 'script',
             'handle'    => 'viora-home-service-script',
             'src'       => get_theme_file_uri('/template/template-parts/page/home/section-service/script.js'),
@@ -117,6 +137,15 @@ function viora_enqueue_custom_assets()
             'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-service/script.js')),
             'in_footer' => true,
             'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-service/script.js')),
+        ),
+        array(
+            'type'      => 'script',
+            'handle'    => 'viora-home-portfolio-script',
+            'src'       => get_theme_file_uri('/template/template-parts/page/home/section-potfolio/script.js'),
+            'deps'      => array('viora-gsap', 'viora-swiper'),
+            'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-potfolio/script.js')),
+            'in_footer' => true,
+            'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-potfolio/script.js')),
         ),
         array(
             'type'      => 'style',

@@ -1,0 +1,198 @@
+.viora-home-portfolio {
+  position: relative;
+  background: #ececf0;
+  padding: clamp(3.25rem, 6vw, 5.5rem) 0;
+}
+
+.viora-home-portfolio__hover-outline {
+  position: absolute;
+  inset: 0;
+  border: 0.125rem dashed #2563eb;
+  border-radius: 0.75rem;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 4;
+  transition: opacity 0.2s ease;
+}
+
+.viora-home-portfolio:hover .viora-home-portfolio__hover-outline,
+.viora-home-portfolio:focus-within .viora-home-portfolio__hover-outline {
+  opacity: 1;
+}
+
+.viora-home-portfolio .customize-partial-edit-shortcut {
+  position: absolute;
+  right: 2rem;
+  top: 1.25rem;
+  z-index: 5;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.viora-home-portfolio:hover .customize-partial-edit-shortcut,
+.viora-home-portfolio:focus-within .customize-partial-edit-shortcut {
+  opacity: 1;
+  visibility: visible;
+}
+
+.viora-home-portfolio__container {
+  max-width: 100%;
+  padding-inline: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.viora-home-portfolio__header {
+  text-align: center;
+  margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.viora-home-portfolio__title {
+  margin: 0;
+  color: #0f172a;
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(2.125rem, 5vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.viora-home-portfolio__slider {
+  overflow: hidden;
+}
+
+.viora-home-portfolio__slider .swiper-wrapper {
+  transition-timing-function: linear;
+}
+
+.viora-home-portfolio__slide {
+  height: auto;
+}
+
+.viora-home-portfolio__card-link {
+  position: relative;
+  display: block;
+  min-height: 17.5rem;
+  border-radius: 1.375rem;
+  overflow: hidden;
+  text-decoration: none;
+  transform: translateY(0);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0 0.875rem 2.125rem rgba(15, 23, 42, 0.12);
+}
+
+.viora-home-portfolio__card-link:hover {
+  transform: translateY(-0.25rem);
+  box-shadow: 0 1.25rem 2.75rem rgba(15, 23, 42, 0.22);
+}
+
+.viora-home-portfolio__card-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.viora-home-portfolio__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.04) 22%,
+    rgba(15, 23, 42, 0.7) 100%
+  );
+}
+
+.viora-home-portfolio__card-content {
+  position: absolute;
+  left: clamp(1rem, 2.2vw, 1.75rem);
+  right: clamp(1rem, 2.2vw, 1.75rem);
+  bottom: clamp(1rem, 2.2vw, 1.75rem);
+  z-index: 2;
+}
+
+.viora-home-portfolio__kicker {
+  margin: 0 0 0.375rem;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: "Barlow", sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.viora-home-portfolio__card-title {
+  margin: 0;
+  color: #ffffff;
+  font-family: "Montserrat", sans-serif;
+  font-size: clamp(1.375rem, 1.9vw, 1.875rem);
+  line-height: 1.1;
+  font-weight: 700;
+}
+
+@media (max-width: 639.98px) {
+  .viora-home-portfolio {
+    padding: 2.625rem 0 3.625rem;
+  }
+
+  .viora-home-portfolio__header {
+    margin-bottom: 1.25rem;
+  }
+
+  .viora-home-portfolio__title {
+    font-size: clamp(1.875rem, 10vw, 2.625rem);
+  }
+
+  .viora-home-portfolio__card-link {
+    min-height: 12.5rem;
+    border-radius: 0.875rem;
+  }
+
+  .viora-home-portfolio__card-content {
+    left: 0.75rem;
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+
+  .viora-home-portfolio__kicker {
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+  }
+
+  .viora-home-portfolio__card-title {
+    font-size: clamp(1.0625rem, 5.4vw, 1.375rem);
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023.98px) {
+  .viora-home-portfolio__card-link {
+    min-height: 15rem;
+    border-radius: 1.125rem;
+  }
+
+  .viora-home-portfolio__card-title {
+    font-size: clamp(1.1875rem, 2.2vw, 1.625rem);
+  }
+
+  .viora-home-portfolio__kicker {
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+  }
+}
+
+@media (min-width: 1024px) {
+  .viora-home-portfolio__card-link {
+    min-height: 17.5rem;
+    border-radius: 1.375rem;
+  }
+}
+
+@media (hover: none) {
+  .viora-home-portfolio__card-link:hover {
+    transform: translateY(0);
+    box-shadow: 0 0.875rem 2.125rem rgba(15, 23, 42, 0.12);
+  }
+}
