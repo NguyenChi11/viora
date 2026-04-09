@@ -8,32 +8,89 @@
   gap: 6px;
 }
 
-.viora-journey-card {
-  border: 1px solid #dbe3ec;
-  border-radius: 8px;
-  overflow: hidden;
-  background: #ffffff;
-  margin-bottom: 12px;
+.viora-journey-cards-grid {
+  display: grid;
+  gap: 12px;
 }
 
-.viora-journey-card:last-child {
-  margin-bottom: 0;
+.viora-journey-actions {
+  margin-top: 12px;
+}
+
+.viora-journey-card {
+  border: 1px solid #d8dee6;
+  border-radius: 8px;
+  background: #fff;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.viora-journey-card:hover {
+  border-color: #c3cedb;
+  box-shadow: 0 6px 16px rgba(16, 24, 40, 0.08);
 }
 
 .viora-journey-card__head {
-  background: #f8fafc;
-  border-bottom: 1px solid #e6ebf1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 9px 11px;
+  background: linear-gradient(180deg, #f8fafc 0%, #f4f7fb 100%);
 }
 
 .viora-toggle-journey-card {
-  width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 9px 11px !important;
-  text-decoration: none !important;
-  color: #1f2937 !important;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  line-height: inherit;
+  text-align: left;
+  appearance: none;
+  -webkit-appearance: none;
+  text-decoration: none;
+  color: #1d2327;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.viora-toggle-journey-card:focus-visible {
+  outline: 2px solid #ff782d;
+  outline-offset: 3px;
+}
+
+.viora-journey-card__head .button-link-delete {
+  color: #9f1239;
+  text-decoration: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  border: 1px solid #f3c5d4;
+  border-radius: 999px;
+  padding: 3px 9px;
+  background: #fff0f5;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.viora-journey-card__head .button-link-delete:hover {
+  background: #ffe4ee;
+  border-color: #eaa2bb;
+}
+
+.viora-journey-card__head .button-link-delete[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .viora-journey-card__title {
@@ -42,7 +99,8 @@
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.25px;
+  letter-spacing: 0.35px;
+  color: #334155;
   text-align: left;
 }
 
@@ -75,5 +133,6 @@
 
 .viora-journey-card__body {
   padding: 10px 12px 12px;
-  background: #ffffff;
+  border-top: 1px solid #e6ebf1;
+  background: #fdfefe;
 }

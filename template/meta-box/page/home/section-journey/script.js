@@ -8,6 +8,18 @@
     }
   }
 
+  function cloneData(value, fallback) {
+    try {
+      return JSON.parse(JSON.stringify(value));
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function isObject(value) {
+    return !!value && typeof value === "object" && !Array.isArray(value);
+  }
+
   function getByPath(obj, path) {
     var parts = String(path || "").split(".");
     var current = obj;
@@ -74,6 +86,10 @@
 
     var mediaFrame;
     var expandedCards = {};
+    var cardsList = root.querySelector("[data-journey-cards-list]");
+    var cardTemplate = root.querySelector("#viora-journey-card-template");
+    var addCardButton = root.querySelector(".viora-add-journey-card");
+    var maxTimelineItems = 12;
 
     function writeData() {
       hidden.value = JSON.stringify(data || {});
@@ -312,6 +328,101 @@
       expandedCards[index] = expanded;
     }
 
+    function toInt(value, fallback) {
+      var parsed = parseInt(value, 10);
+      return Number.isFinite(parsed) ? parsed : fallback;
+    }
+
+    function createEmptyTimelineItem() {
+      return {
+        year: "",
+        title: "",
+        description: "",
+        icon_id: 0,
+        icon_url: "",
+        icon: "",
+        isActive: false,
+      };
+    }
+
+    function ensureTimelineItemsArray() {
+      var layout = isObject(data.layout) ? data.layout : {};
+      data.layout = layout;
+
+      var timeline = isObject(layout.timeline) ? layout.timeline : {};
+      layout.timeline = timeline;
+
+      if (!Array.isArray(timeline.items)) {
+        timeline.items = [];
+      }
+
+      return timeline.items;
+    }
+
+    function ensureSingleActiveItem(items) {
+      if (!Array.isArray(items) || items.length === 0) {
+        return;
+      }
+
+      var activeIndex = -1;
+      for (var i = 0; i < items.length; i += 1) {
+        if (items[i] && items[i].isActive) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      if (activeIndex < 0) {
+        activeIndex = 0;
+      }
+
+      for (var j = 0; j < items.length; j += 1) {
+        items[j].isActive = j === activeIndex;
+      }
+    }
+
+    function normalizeTimelineItems() {
+      var rawItems = ensureTimelineItemsArray();
+      var normalized = [];
+
+      for (var i = 0; i < rawItems.length; i += 1) {
+        var item = isObject(rawItems[i]) ? rawItems[i] : {};
+        var iconUrl =
+          typeof item.icon_url === "string"
+            ? item.icon_url
+            : typeof item.icon === "string"
+              ? item.icon
+              : "";
+
+        normalized.push({
+          year: typeof item.year === "string" ? item.year : "",
+          title: typeof item.title === "string" ? item.title : "",
+          description:
+            typeof item.description === "string" ? item.description : "",
+          icon_id: toInt(item.icon_id, 0),
+          icon_url: iconUrl,
+          icon: iconUrl,
+          isActive: !!item.isActive,
+        });
+      }
+
+      if (normalized.length > maxTimelineItems) {
+        normalized = normalized.slice(0, maxTimelineItems);
+      }
+
+      ensureSingleActiveItem(normalized);
+      setByPath(data, "layout.timeline.items", normalized);
+      return normalized;
+    }
+
+    function updateAddButtonState(itemCount) {
+      if (!addCardButton) {
+        return;
+      }
+
+      addCardButton.disabled = itemCount >= maxTimelineItems;
+    }
+
     function enforceSingleActive(activePath) {
       var fields = root.querySelectorAll(".viora-journey-active[data-path]");
       Array.prototype.forEach.call(fields, function (field) {
@@ -381,8 +492,14 @@
       var path = target.getAttribute("data-path");
       var value = target.type === "checkbox" ? !!target.checked : target.value;
 
-      if (target.classList.contains("viora-journey-active") && value) {
-        enforceSingleActive(path);
+      if (target.classList.contains("viora-journey-active")) {
+        if (value) {
+          enforceSingleActive(path);
+        } else {
+          setByPath(data, path, false);
+          ensureSingleActiveItem(normalizeTimelineItems());
+          hydrateFields();
+        }
       } else {
         setByPath(data, path, value);
       }
@@ -394,6 +511,11 @@
     function bindLinkPicker() {
       var buttons = root.querySelectorAll(".viora-journey-choose-link");
       Array.prototype.forEach.call(buttons, function (button) {
+        if (button.dataset.journeyLinkBound === "1") {
+          return;
+        }
+        button.dataset.journeyLinkBound = "1";
+
         button.addEventListener("click", function (event) {
           event.preventDefault();
 
@@ -418,6 +540,11 @@
     function bindCardToggles() {
       var buttons = root.querySelectorAll(".viora-toggle-journey-card");
       Array.prototype.forEach.call(buttons, function (button) {
+        if (button.dataset.journeyToggleBound === "1") {
+          return;
+        }
+        button.dataset.journeyToggleBound = "1";
+
         button.addEventListener("click", function (event) {
           event.preventDefault();
 
@@ -439,79 +566,187 @@
       });
     }
 
-    var mediaGroups = root.querySelectorAll(".viora-media-field");
-    Array.prototype.forEach.call(mediaGroups, function (group) {
-      var selectBtn = group.querySelector(".viora-select-media");
-      var removeBtn = group.querySelector(".viora-remove-media");
-      var idPath = group.getAttribute("data-id-path");
-      var urlPath = group.getAttribute("data-url-path");
-      var fallbackPath = group.getAttribute("data-fallback-path");
+    function bindMedia() {
+      var mediaGroups = root.querySelectorAll(".viora-media-field");
+      Array.prototype.forEach.call(mediaGroups, function (group) {
+        if (group.dataset.journeyMediaBound === "1") {
+          return;
+        }
+        group.dataset.journeyMediaBound = "1";
 
-      if (selectBtn) {
-        selectBtn.addEventListener("click", function (event) {
-          event.preventDefault();
+        var selectBtn = group.querySelector(".viora-select-media");
+        var removeBtn = group.querySelector(".viora-remove-media");
+        var idPath = group.getAttribute("data-id-path");
+        var urlPath = group.getAttribute("data-url-path");
+        var fallbackPath = group.getAttribute("data-fallback-path");
 
-          if (!mediaFrame) {
-            mediaFrame = wp.media({
-              title:
-                typeof i18n.selectImage === "string" && i18n.selectImage
-                  ? i18n.selectImage
-                  : "Select image",
-              button: {
-                text:
-                  typeof i18n.useImage === "string" && i18n.useImage
-                    ? i18n.useImage
-                    : "Use image",
-              },
-              multiple: false,
+        if (selectBtn) {
+          selectBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            if (!mediaFrame) {
+              mediaFrame = wp.media({
+                title:
+                  typeof i18n.selectImage === "string" && i18n.selectImage
+                    ? i18n.selectImage
+                    : "Select image",
+                button: {
+                  text:
+                    typeof i18n.useImage === "string" && i18n.useImage
+                      ? i18n.useImage
+                      : "Use image",
+                },
+                multiple: false,
+              });
+            }
+
+            if (typeof mediaFrame.off === "function") {
+              mediaFrame.off("select");
+            }
+
+            mediaFrame.on("select", function () {
+              var attachment = mediaFrame
+                .state()
+                .get("selection")
+                .first()
+                .toJSON();
+              var url = attachment && attachment.url ? attachment.url : "";
+
+              setByPath(data, idPath, attachment.id || 0);
+              setByPath(data, urlPath, url);
+              if (fallbackPath) {
+                setByPath(data, fallbackPath, url);
+              }
+
+              writeData();
+              updateMediaPreview(group);
             });
-          }
 
-          if (typeof mediaFrame.off === "function") {
-            mediaFrame.off("select");
-          }
+            mediaFrame.open();
+          });
+        }
 
-          mediaFrame.on("select", function () {
-            var attachment = mediaFrame
-              .state()
-              .get("selection")
-              .first()
-              .toJSON();
-            var url = attachment && attachment.url ? attachment.url : "";
-
-            setByPath(data, idPath, attachment.id || 0);
-            setByPath(data, urlPath, url);
+        if (removeBtn) {
+          removeBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+            setByPath(data, idPath, 0);
+            setByPath(data, urlPath, "");
             if (fallbackPath) {
-              setByPath(data, fallbackPath, url);
+              setByPath(data, fallbackPath, "");
             }
 
             writeData();
             updateMediaPreview(group);
           });
+        }
+      });
+    }
 
-          mediaFrame.open();
-        });
-      }
+    function bindRemoveCardButtons() {
+      var buttons = root.querySelectorAll(".viora-remove-journey-card");
+      Array.prototype.forEach.call(buttons, function (button) {
+        if (button.dataset.journeyRemoveBound === "1") {
+          return;
+        }
+        button.dataset.journeyRemoveBound = "1";
 
-      if (removeBtn) {
-        removeBtn.addEventListener("click", function (event) {
+        button.addEventListener("click", function (event) {
           event.preventDefault();
-          setByPath(data, idPath, 0);
-          setByPath(data, urlPath, "");
-          if (fallbackPath) {
-            setByPath(data, fallbackPath, "");
+
+          var index = toInt(button.getAttribute("data-card-index"), -1);
+          if (index < 0) {
+            return;
           }
 
+          var items = normalizeTimelineItems();
+          if (index >= items.length) {
+            return;
+          }
+
+          items.splice(index, 1);
+          ensureSingleActiveItem(items);
+          setByPath(data, "layout.timeline.items", items);
+
           writeData();
-          updateMediaPreview(group);
+
+          var openIndex =
+            items.length > 0 ? Math.min(index, items.length - 1) : null;
+          renderTimelineCards({ openIndex: openIndex });
         });
+      });
+    }
+
+    function bindAddCardButton() {
+      if (!addCardButton || addCardButton.dataset.journeyAddBound === "1") {
+        return;
       }
-    });
+      addCardButton.dataset.journeyAddBound = "1";
+
+      addCardButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var items = normalizeTimelineItems();
+        if (items.length >= maxTimelineItems) {
+          updateAddButtonState(items.length);
+          return;
+        }
+
+        var nextItem = createEmptyTimelineItem();
+        if (items.length === 0) {
+          nextItem.isActive = true;
+        }
+        items.push(nextItem);
+        ensureSingleActiveItem(items);
+        setByPath(data, "layout.timeline.items", items);
+
+        writeData();
+        renderTimelineCards({ openIndex: items.length - 1 });
+      });
+    }
+
+    function renderTimelineCards(options) {
+      options = options || {};
+
+      if (!cardsList || !cardTemplate) {
+        return;
+      }
+
+      var items = normalizeTimelineItems();
+      var templateMarkup = cardTemplate.innerHTML || "";
+      var previousExpanded = cloneData(expandedCards, {});
+      var markup = "";
+
+      for (var i = 0; i < items.length; i += 1) {
+        markup += templateMarkup.replace(/__INDEX__/g, String(i));
+      }
+
+      cardsList.innerHTML = markup;
+      expandedCards = {};
+
+      for (var index = 0; index < items.length; index += 1) {
+        if (typeof options.openIndex === "number") {
+          expandedCards[index] = index === options.openIndex;
+          continue;
+        }
+
+        if (typeof previousExpanded[index] === "boolean") {
+          expandedCards[index] = previousExpanded[index];
+          continue;
+        }
+
+        expandedCards[index] = true;
+      }
+
+      hydrateFields();
+      bindCardToggles();
+      bindRemoveCardButtons();
+      bindMedia();
+      updateAddButtonState(items.length);
+    }
 
     if (helpToggle) {
       var helpEnabled = readHelpMode();
       helpToggle.checked = helpEnabled;
-      applyHelpMode(helpEnabled);
       helpToggle.addEventListener("change", function () {
         var checked = !!helpToggle.checked;
         saveHelpMode(checked);
@@ -519,9 +754,17 @@
       });
     }
 
-    hydrateFields();
+    renderTimelineCards();
     bindLinkPicker();
     bindCardToggles();
+    bindRemoveCardButtons();
+    bindAddCardButton();
+    bindMedia();
+
+    if (helpToggle && helpToggle.checked) {
+      applyHelpMode(true);
+    }
+
     writeData();
   }
 

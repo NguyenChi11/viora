@@ -41,18 +41,23 @@ if (!function_exists('viora_home_journey_meta_box_content')) {
             ? viora_home_get_inline_i18n_data()
             : array();
 
+        $style_path = get_theme_file_path('/template/meta-box/page/home/section-journey/style.css');
+        $script_path = get_theme_file_path('/template/meta-box/page/home/section-journey/script.js');
+        $style_ver = file_exists($style_path) ? (string) filemtime($style_path) : null;
+        $script_ver = file_exists($script_path) ? (string) filemtime($script_path) : null;
+
         wp_enqueue_media();
         wp_enqueue_style(
             'viora-home-journey-meta-style',
             get_theme_file_uri('/template/meta-box/page/home/section-journey/style.css'),
             array(),
-            null
+            $style_ver
         );
         wp_enqueue_script(
             'viora-home-journey-meta-script',
             get_theme_file_uri('/template/meta-box/page/home/section-journey/script.js'),
             array(),
-            null,
+            $script_ver,
             true
         );
 

@@ -27,6 +27,13 @@ if (!function_exists('viora_home_get_inline_i18n_data')) {
             'servicesEyebrow' => __('Services eyebrow', 'viora'),
             'servicesTitle' => __('Services title', 'viora'),
             'portfolioTitle' => __('Portfolio title', 'viora'),
+            'clientKicker' => __('Client kicker', 'viora'),
+            'clientTitle' => __('Client title', 'viora'),
+            'clientLede' => __('Client lead text', 'viora'),
+            'clientQuote' => __('Client quote', 'viora'),
+            'clientName' => __('Client name', 'viora'),
+            'clientRole' => __('Client role', 'viora'),
+            'clientAvatar' => __('Client avatar image', 'viora'),
             'serviceIconImage' => __('Service icon image', 'viora'),
             'serviceCardTitle' => __('Service title', 'viora'),
             'serviceDescription' => __('Service description', 'viora'),
@@ -88,6 +95,13 @@ if (!function_exists('viora_home_get_inline_i18n_data')) {
                 'layout.visual.rings.first' => __('Toggle first alarm ring in journey visual.', 'viora'),
                 'layout.visual.rings.second' => __('Toggle second alarm ring in journey visual.', 'viora'),
                 'layout.visual.flash' => __('Toggle flash effect in journey visual.', 'viora'),
+                'heading.kicker' => __('Small label shown above the client title.', 'viora'),
+                'heading.title' => __('Main heading for the client section.', 'viora'),
+                'heading.lede' => __('Supporting paragraph under the client heading.', 'viora'),
+                'testimonials.quote' => __('Testimonial quote text.', 'viora'),
+                'testimonials.name' => __('Client name shown under the quote.', 'viora'),
+                'testimonials.role' => __('Client role/company subtitle.', 'viora'),
+                'testimonials.avatar_url' => __('Client avatar image URL.', 'viora'),
             ),
         );
     }
@@ -110,3 +124,4 @@ require get_template_directory() . '/inc/customizer/home-page/section-banner/ind
 require get_template_directory() . '/inc/customizer/home-page/section-services/index.php';
 require get_template_directory() . '/inc/customizer/home-page/section-journey/index.php';
 require get_template_directory() . '/inc/customizer/home-page/section-portfolio/index.php';
+require get_template_directory() . '/inc/customizer/home-page/section-client/index.php';

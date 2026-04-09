@@ -132,6 +132,15 @@ function viora_enqueue_custom_assets()
         ),
         array(
             'type'      => 'style',
+            'handle'    => 'viora-home-client-style',
+            'src'       => get_theme_file_uri('/template/template-parts/page/home/section-client/style.css'),
+            'deps'      => array('viora-global-style'),
+            'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-client/style.css')),
+            'in_footer' => false,
+            'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-client/style.css')),
+        ),
+        array(
+            'type'      => 'style',
             'handle'    => 'viora-portfolio-single-style',
             'src'       => get_theme_file_uri('/template/template-parts/single/portfolio/style.css'),
             'deps'      => array('viora-global-style'),
@@ -165,6 +174,15 @@ function viora_enqueue_custom_assets()
             'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-portfolio/script.js')),
             'in_footer' => true,
             'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-portfolio/script.js')),
+        ),
+        array(
+            'type'      => 'script',
+            'handle'    => 'viora-home-client-script',
+            'src'       => get_theme_file_uri('/template/template-parts/page/home/section-client/script.js'),
+            'deps'      => array('viora-gsap', 'viora-swiper'),
+            'ver'       => filemtime(get_theme_file_path('/template/template-parts/page/home/section-client/script.js')),
+            'in_footer' => true,
+            'condition' => $is_home_context && file_exists(get_theme_file_path('/template/template-parts/page/home/section-client/script.js')),
         ),
         array(
             'type'      => 'style',

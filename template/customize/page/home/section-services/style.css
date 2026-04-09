@@ -107,15 +107,24 @@
   justify-content: space-between;
   gap: 8px;
   width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  line-height: inherit;
+  text-align: left;
+  appearance: none;
+  -webkit-appearance: none;
   text-decoration: none;
   color: #1d2327;
   cursor: pointer;
   border-radius: 4px;
 }
 
-.viora-toggle-service-card:focus {
-  box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.22);
-  outline: none;
+.viora-toggle-service-card:focus-visible {
+  outline: 2px solid #ff782d;
+  outline-offset: 3px;
 }
 
 .viora-toggle-service-card .viora-services-card__title {

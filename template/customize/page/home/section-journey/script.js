@@ -131,6 +131,10 @@
     var syncDelay = 120;
     var syncTimer = null;
     var expandedCards = {};
+    var cardsList = root.querySelector("[data-journey-cards-list]");
+    var cardTemplate = root.querySelector("#viora-journey-card-template");
+    var addCardButton = root.querySelector(".viora-add-journey-card");
+    var maxTimelineItems = 12;
 
     function clearSyncTimer() {
       if (!syncTimer) {
@@ -215,7 +219,6 @@
         currentTarget: "",
       };
 
-      window.vioraLinkTarget = targetObj;
       window.vioraLinkTarget = targetObj;
 
       var linkPickerSection = wp.customize.section("viora_link_picker_section");
@@ -332,6 +335,101 @@
       expandedCards[index] = expanded;
     }
 
+    function toInt(value, fallback) {
+      var parsed = parseInt(value, 10);
+      return Number.isFinite(parsed) ? parsed : fallback;
+    }
+
+    function createEmptyTimelineItem() {
+      return {
+        year: "",
+        title: "",
+        description: "",
+        icon_id: 0,
+        icon_url: "",
+        icon: "",
+        isActive: false,
+      };
+    }
+
+    function ensureTimelineItemsArray() {
+      var layout = isObject(data.layout) ? data.layout : {};
+      data.layout = layout;
+
+      var timeline = isObject(layout.timeline) ? layout.timeline : {};
+      layout.timeline = timeline;
+
+      if (!Array.isArray(timeline.items)) {
+        timeline.items = [];
+      }
+
+      return timeline.items;
+    }
+
+    function ensureSingleActiveItem(items) {
+      if (!Array.isArray(items) || items.length === 0) {
+        return;
+      }
+
+      var activeIndex = -1;
+      for (var i = 0; i < items.length; i += 1) {
+        if (items[i] && items[i].isActive) {
+          activeIndex = i;
+          break;
+        }
+      }
+
+      if (activeIndex < 0) {
+        activeIndex = 0;
+      }
+
+      for (var j = 0; j < items.length; j += 1) {
+        items[j].isActive = j === activeIndex;
+      }
+    }
+
+    function normalizeTimelineItems() {
+      var rawItems = ensureTimelineItemsArray();
+      var normalized = [];
+
+      for (var i = 0; i < rawItems.length; i += 1) {
+        var item = isObject(rawItems[i]) ? rawItems[i] : {};
+        var iconUrl =
+          typeof item.icon_url === "string"
+            ? item.icon_url
+            : typeof item.icon === "string"
+              ? item.icon
+              : "";
+
+        normalized.push({
+          year: typeof item.year === "string" ? item.year : "",
+          title: typeof item.title === "string" ? item.title : "",
+          description:
+            typeof item.description === "string" ? item.description : "",
+          icon_id: toInt(item.icon_id, 0),
+          icon_url: iconUrl,
+          icon: iconUrl,
+          isActive: !!item.isActive,
+        });
+      }
+
+      if (normalized.length > maxTimelineItems) {
+        normalized = normalized.slice(0, maxTimelineItems);
+      }
+
+      ensureSingleActiveItem(normalized);
+      setByPath(data, "layout.timeline.items", normalized);
+      return normalized;
+    }
+
+    function updateAddButtonState(itemCount) {
+      if (!addCardButton) {
+        return;
+      }
+
+      addCardButton.disabled = itemCount >= maxTimelineItems;
+    }
+
     function updateItemLabels() {
       var cards = root.querySelectorAll(".viora-journey-card[data-item-index]");
       Array.prototype.forEach.call(cards, function (card) {
@@ -392,13 +490,24 @@
     function bindFields() {
       var fields = root.querySelectorAll(".viora-journey-field[data-path]");
       Array.prototype.forEach.call(fields, function (field) {
+        if (field.dataset.journeyFieldBound === "1") {
+          return;
+        }
+        field.dataset.journeyFieldBound = "1";
+
         var path = field.getAttribute("data-path");
 
         function syncFromField(immediateSync) {
           var value = field.type === "checkbox" ? !!field.checked : field.value;
 
-          if (field.classList.contains("viora-journey-active") && value) {
-            enforceSingleActive(path);
+          if (field.classList.contains("viora-journey-active")) {
+            if (value) {
+              enforceSingleActive(path);
+            } else {
+              setByPath(data, path, false);
+              ensureSingleActiveItem(normalizeTimelineItems());
+              hydrateFields();
+            }
           } else {
             setByPath(data, path, value);
           }
@@ -426,6 +535,11 @@
     function bindMedia() {
       var groups = root.querySelectorAll(".viora-media-field");
       Array.prototype.forEach.call(groups, function (group) {
+        if (group.dataset.journeyMediaBound === "1") {
+          return;
+        }
+        group.dataset.journeyMediaBound = "1";
+
         var selectBtn = group.querySelector(".viora-select-media");
         var removeBtn = group.querySelector(".viora-remove-media");
         var idPath = group.getAttribute("data-id-path");
@@ -499,6 +613,11 @@
     function bindChooseLinkButtons() {
       var buttons = root.querySelectorAll(".viora-journey-choose-link");
       Array.prototype.forEach.call(buttons, function (button) {
+        if (button.dataset.journeyLinkBound === "1") {
+          return;
+        }
+        button.dataset.journeyLinkBound = "1";
+
         button.addEventListener("click", function (event) {
           event.preventDefault();
 
@@ -523,6 +642,11 @@
     function bindCardToggles() {
       var buttons = root.querySelectorAll(".viora-toggle-journey-card");
       Array.prototype.forEach.call(buttons, function (button) {
+        if (button.dataset.journeyToggleBound === "1") {
+          return;
+        }
+        button.dataset.journeyToggleBound = "1";
+
         button.addEventListener("click", function (event) {
           event.preventDefault();
 
@@ -544,10 +668,114 @@
       });
     }
 
+    function bindRemoveCardButtons() {
+      var buttons = root.querySelectorAll(".viora-remove-journey-card");
+      Array.prototype.forEach.call(buttons, function (button) {
+        if (button.dataset.journeyRemoveBound === "1") {
+          return;
+        }
+        button.dataset.journeyRemoveBound = "1";
+
+        button.addEventListener("click", function (event) {
+          event.preventDefault();
+
+          var index = toInt(button.getAttribute("data-card-index"), -1);
+          if (index < 0) {
+            return;
+          }
+
+          var items = normalizeTimelineItems();
+          if (index >= items.length) {
+            return;
+          }
+
+          items.splice(index, 1);
+          ensureSingleActiveItem(items);
+          setByPath(data, "layout.timeline.items", items);
+
+          writeData({ immediateSync: true });
+          sendLivePreviewPatch();
+
+          var openIndex =
+            items.length > 0 ? Math.min(index, items.length - 1) : null;
+          renderTimelineCards({ openIndex: openIndex });
+        });
+      });
+    }
+
+    function bindAddCardButton() {
+      if (!addCardButton || addCardButton.dataset.journeyAddBound === "1") {
+        return;
+      }
+      addCardButton.dataset.journeyAddBound = "1";
+
+      addCardButton.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        var items = normalizeTimelineItems();
+        if (items.length >= maxTimelineItems) {
+          updateAddButtonState(items.length);
+          return;
+        }
+
+        var nextItem = createEmptyTimelineItem();
+        if (items.length === 0) {
+          nextItem.isActive = true;
+        }
+        items.push(nextItem);
+        ensureSingleActiveItem(items);
+        setByPath(data, "layout.timeline.items", items);
+
+        writeData({ immediateSync: true });
+        sendLivePreviewPatch();
+        renderTimelineCards({ openIndex: items.length - 1 });
+      });
+    }
+
+    function renderTimelineCards(options) {
+      options = options || {};
+
+      if (!cardsList || !cardTemplate) {
+        return;
+      }
+
+      var items = normalizeTimelineItems();
+      var templateMarkup = cardTemplate.innerHTML || "";
+      var previousExpanded = cloneData(expandedCards, {});
+      var markup = "";
+
+      for (var i = 0; i < items.length; i += 1) {
+        markup += templateMarkup.replace(/__INDEX__/g, String(i));
+      }
+
+      cardsList.innerHTML = markup;
+      expandedCards = {};
+
+      for (var index = 0; index < items.length; index += 1) {
+        if (typeof options.openIndex === "number") {
+          expandedCards[index] = index === options.openIndex;
+          continue;
+        }
+
+        if (typeof previousExpanded[index] === "boolean") {
+          expandedCards[index] = previousExpanded[index];
+          continue;
+        }
+
+        expandedCards[index] = true;
+      }
+
+      hydrateFields();
+      bindFields();
+      bindMedia();
+      bindCardToggles();
+      bindRemoveCardButtons();
+      updateAddButtonState(items.length);
+    }
+
     if (helpToggle) {
       var helpEnabled = readHelpMode();
       helpToggle.checked = helpEnabled;
-      applyHelpMode(helpEnabled);
       helpToggle.addEventListener("change", function () {
         var checked = !!helpToggle.checked;
         saveHelpMode(checked);
@@ -555,11 +783,18 @@
       });
     }
 
-    hydrateFields();
+    renderTimelineCards();
     bindFields();
     bindMedia();
     bindChooseLinkButtons();
     bindCardToggles();
+    bindRemoveCardButtons();
+    bindAddCardButton();
+
+    if (helpToggle && helpToggle.checked) {
+      applyHelpMode(true);
+    }
+
     writeData({ immediateSync: true });
   }
 

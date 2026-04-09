@@ -46,7 +46,7 @@ wp_nonce_field('viora_home_services_meta_save', 'viora_home_services_meta_nonce'
     <template id="viora-services-card-template">
         <div class="viora-services-card" data-card-index="__INDEX__">
             <div class="viora-services-card__head">
-                <button type="button" class="button-link viora-toggle-service-card" data-card-index="__INDEX__"
+                <button type="button" class="viora-toggle-service-card" data-card-index="__INDEX__"
                     aria-expanded="true">
                     <span class="viora-services-card__title"></span>
                     <span class="viora-services-card__chevron" aria-hidden="true"></span>
@@ -85,7 +85,8 @@ wp_nonce_field('viora_home_services_meta_save', 'viora_home_services_meta_nonce'
 
                 <div class="viora-control viora-features-control" data-features-control
                     data-path="items.__INDEX__.features" data-help-path="items.__INDEX__.features">
-                    <button type="button" class="button-link viora-toggle-features" data-card-index="__INDEX__" aria-expanded="false">
+                    <button type="button" class="button-link viora-toggle-features" data-card-index="__INDEX__"
+                        aria-expanded="false">
                         <span class="viora-features-label"><?php esc_html_e('Features', 'viora'); ?></span>
                         <span class="viora-features-meta">
                             <span class="viora-features-count">0</span>

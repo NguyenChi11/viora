@@ -40,65 +40,74 @@ $journey_data = is_array($journey_data) ? $journey_data : array();
 
     <div class="viora-home-journey-editor__section">
         <h4><?php esc_html_e('Timeline Items', 'viora'); ?></h4>
-        <?php for ($i = 0; $i < 5; $i++) : ?>
-        <div class="viora-journey-card" data-item-index="<?php echo esc_attr($i); ?>">
-            <div class="viora-journey-card__head">
-                <button type="button" class="button-link viora-toggle-journey-card"
-                    data-card-index="<?php echo esc_attr($i); ?>" aria-expanded="true">
-                    <span
-                        class="viora-journey-card__title"><?php echo esc_html(sprintf(__('Item %d', 'viora'), $i + 1)); ?></span>
-                    <span class="viora-journey-card__chevron" aria-hidden="true"></span>
-                </button>
-            </div>
-
-            <div class="viora-journey-card__body">
-                <div class="viora-control">
-                    <label class="viora-field-label"><?php esc_html_e('Year', 'viora'); ?></label>
-                    <input type="text" class="regular-text viora-journey-field"
-                        data-path="layout.timeline.items.<?php echo esc_attr($i); ?>.year"
-                        data-help-path="layout.timeline.items.0.year">
-                </div>
-
-                <div class="viora-control">
-                    <label class="viora-field-label"><?php esc_html_e('Title', 'viora'); ?></label>
-                    <input type="text" class="regular-text viora-journey-field"
-                        data-path="layout.timeline.items.<?php echo esc_attr($i); ?>.title"
-                        data-help-path="layout.timeline.items.0.title">
-                </div>
-
-                <div class="viora-control">
-                    <label class="viora-field-label"><?php esc_html_e('Description', 'viora'); ?></label>
-                    <textarea rows="3" class="large-text viora-journey-field"
-                        data-path="layout.timeline.items.<?php echo esc_attr($i); ?>.description"
-                        data-help-path="layout.timeline.items.0.description"></textarea>
-                </div>
-
-                <div class="viora-control">
-                    <label class="viora-field-label"><?php esc_html_e('Icon', 'viora'); ?></label>
-                    <div class="viora-media-field"
-                        data-id-path="layout.timeline.items.<?php echo esc_attr($i); ?>.icon_id"
-                        data-url-path="layout.timeline.items.<?php echo esc_attr($i); ?>.icon_url"
-                        data-fallback-path="layout.timeline.items.<?php echo esc_attr($i); ?>.icon">
-                        <input type="hidden" class="viora-media-id-field"
-                            data-path="layout.timeline.items.<?php echo esc_attr($i); ?>.icon_id">
-                        <div class="viora-media-actions">
-                            <button type="button"
-                                class="button viora-select-media"><?php esc_html_e('Select image', 'viora'); ?></button>
-                            <button type="button"
-                                class="button viora-remove-media"><?php esc_html_e('Remove image', 'viora'); ?></button>
-                        </div>
-                        <div class="viora-media-preview"></div>
-                    </div>
-                </div>
-
-                <label class="viora-home-journey-editor__toggle">
-                    <input type="checkbox" class="viora-journey-field viora-journey-active"
-                        data-path="layout.timeline.items.<?php echo esc_attr($i); ?>.isActive">
-                    <?php esc_html_e('Set as active item', 'viora'); ?>
-                </label>
-            </div>
+        <div class="viora-journey-cards-grid" data-journey-cards-list></div>
+        <div class="viora-journey-actions">
+            <button type="button" class="button button-secondary viora-add-journey-card">
+                <?php esc_html_e('Add Timeline Item', 'viora'); ?>
+            </button>
         </div>
-        <?php endfor; ?>
+
+        <template id="viora-journey-card-template">
+            <div class="viora-journey-card" data-item-index="__INDEX__">
+                <div class="viora-journey-card__head">
+                    <button type="button" class="viora-toggle-journey-card"
+                        data-card-index="__INDEX__" aria-expanded="true">
+                        <span class="viora-journey-card__title"></span>
+                        <span class="viora-journey-card__chevron" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="button-link-delete viora-remove-journey-card" data-card-index="__INDEX__">
+                        <?php esc_html_e('Remove', 'viora'); ?>
+                    </button>
+                </div>
+
+                <div class="viora-journey-card__body">
+                    <div class="viora-control">
+                        <label class="viora-field-label"><?php esc_html_e('Year', 'viora'); ?></label>
+                        <input type="text" class="regular-text viora-journey-field"
+                            data-path="layout.timeline.items.__INDEX__.year"
+                            data-help-path="layout.timeline.items.0.year">
+                    </div>
+
+                    <div class="viora-control">
+                        <label class="viora-field-label"><?php esc_html_e('Title', 'viora'); ?></label>
+                        <input type="text" class="regular-text viora-journey-field"
+                            data-path="layout.timeline.items.__INDEX__.title"
+                            data-help-path="layout.timeline.items.0.title">
+                    </div>
+
+                    <div class="viora-control">
+                        <label class="viora-field-label"><?php esc_html_e('Description', 'viora'); ?></label>
+                        <textarea rows="3" class="large-text viora-journey-field"
+                            data-path="layout.timeline.items.__INDEX__.description"
+                            data-help-path="layout.timeline.items.0.description"></textarea>
+                    </div>
+
+                    <div class="viora-control">
+                        <label class="viora-field-label"><?php esc_html_e('Icon', 'viora'); ?></label>
+                        <div class="viora-media-field"
+                            data-id-path="layout.timeline.items.__INDEX__.icon_id"
+                            data-url-path="layout.timeline.items.__INDEX__.icon_url"
+                            data-fallback-path="layout.timeline.items.__INDEX__.icon">
+                            <input type="hidden" class="viora-media-id-field"
+                                data-path="layout.timeline.items.__INDEX__.icon_id">
+                            <div class="viora-media-actions">
+                                <button type="button"
+                                    class="button viora-select-media"><?php esc_html_e('Select image', 'viora'); ?></button>
+                                <button type="button"
+                                    class="button viora-remove-media"><?php esc_html_e('Remove image', 'viora'); ?></button>
+                            </div>
+                            <div class="viora-media-preview"></div>
+                        </div>
+                    </div>
+
+                    <label class="viora-home-journey-editor__toggle">
+                        <input type="checkbox" class="viora-journey-field viora-journey-active"
+                            data-path="layout.timeline.items.__INDEX__.isActive">
+                        <?php esc_html_e('Set as active item', 'viora'); ?>
+                    </label>
+                </div>
+            </div>
+        </template>
     </div>
 
     <div class="viora-home-journey-editor__section">

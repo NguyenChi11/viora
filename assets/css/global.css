@@ -128,7 +128,7 @@ input[type="checkbox"] {
   }
   .swiper-navigation:not(.swiper-button-disabled):hover {
     border-radius: 1.83638rem;
-    background: #e77b00;
+    background: #5647ff;
     box-shadow: 1.469px 2.938px 14.691px 1.469px rgba(205, 204, 218, 0.4);
   }
   .swiper-navigation:not(.swiper-button-disabled):hover img {

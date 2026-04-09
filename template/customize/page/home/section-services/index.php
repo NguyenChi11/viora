@@ -40,11 +40,13 @@ $services_data = is_array($services_data) ? $services_data : array();
     <template id="viora-services-card-template">
         <div class="viora-services-card" data-card-index="__INDEX__">
             <div class="viora-services-card__head">
-                <button type="button" class="button-link viora-toggle-service-card" data-card-index="__INDEX__" aria-expanded="true">
+                <button type="button" class="viora-toggle-service-card" data-card-index="__INDEX__"
+                    aria-expanded="true">
                     <span class="viora-services-card__title"></span>
                     <span class="viora-services-card__chevron" aria-hidden="true"></span>
                 </button>
-                <button type="button" class="button-link-delete viora-remove-service-card"><?php esc_html_e('Remove', 'viora'); ?></button>
+                <button type="button"
+                    class="button-link-delete viora-remove-service-card"><?php esc_html_e('Remove', 'viora'); ?></button>
             </div>
 
             <div class="viora-services-card__body">
@@ -52,12 +54,13 @@ $services_data = is_array($services_data) ? $services_data : array();
                 <div class="viora-control">
                     <label class="viora-field-label"><?php esc_html_e('Icon image', 'viora'); ?></label>
                     <div class="viora-media-field" data-id-path="items.__INDEX__.icon_id"
-                        data-url-path="items.__INDEX__.iconImage_url"
-                        data-fallback-path="items.__INDEX__.iconImage">
+                        data-url-path="items.__INDEX__.iconImage_url" data-fallback-path="items.__INDEX__.iconImage">
                         <input type="hidden" class="viora-media-id-field" data-path="items.__INDEX__.icon_id">
                         <div class="viora-media-actions">
-                            <button type="button" class="button viora-select-media"><?php esc_html_e('Select image', 'viora'); ?></button>
-                            <button type="button" class="button viora-remove-media"><?php esc_html_e('Remove image', 'viora'); ?></button>
+                            <button type="button"
+                                class="button viora-select-media"><?php esc_html_e('Select image', 'viora'); ?></button>
+                            <button type="button"
+                                class="button viora-remove-media"><?php esc_html_e('Remove image', 'viora'); ?></button>
                         </div>
                         <div class="viora-media-preview"></div>
                     </div>
@@ -70,12 +73,14 @@ $services_data = is_array($services_data) ? $services_data : array();
 
                 <div class="viora-control">
                     <label class="viora-field-label"><?php esc_html_e('Description', 'viora'); ?></label>
-                    <textarea rows="3" class="large-text viora-services-field" data-path="items.__INDEX__.description"></textarea>
+                    <textarea rows="3" class="large-text viora-services-field"
+                        data-path="items.__INDEX__.description"></textarea>
                 </div>
 
                 <div class="viora-control viora-features-control" data-features-control
                     data-path="items.__INDEX__.features" data-help-path="items.__INDEX__.features">
-                    <button type="button" class="button-link viora-toggle-features" data-card-index="__INDEX__" aria-expanded="false">
+                    <button type="button" class="button-link viora-toggle-features" data-card-index="__INDEX__"
+                        aria-expanded="false">
                         <span class="viora-features-label"><?php esc_html_e('Features', 'viora'); ?></span>
                         <span class="viora-features-meta">
                             <span class="viora-features-count">0</span>
